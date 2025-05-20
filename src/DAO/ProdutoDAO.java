@@ -34,13 +34,13 @@ public class ProdutoDAO {
                      "WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, produto.getIdProduto());
-            stmt.setString(1, produto.getNome());
-            stmt.setDouble(2, produto.getPreco());
-            stmt.setString(3, produto.getUnidade());
-            stmt.setInt(4, produto.getQuantidadeEstoque());
-            stmt.setInt(5, produto.getQuantidadeMinEstoque());
-            stmt.setInt(6, produto.getQuantidadeMaxEstoque());
-            stmt.setString(7, produto.getCategoria());
+            stmt.setString(2, produto.getNome());
+            stmt.setDouble(3, produto.getPreco());
+            stmt.setString(4, produto.getUnidade());
+            stmt.setInt(5, produto.getQuantidadeEstoque());
+            stmt.setInt(6, produto.getQuantidadeMinEstoque());
+            stmt.setInt(7, produto.getQuantidadeMaxEstoque());
+            stmt.setString(8, produto.getCategoria());
             stmt.executeUpdate();
         }
     }
@@ -90,4 +90,20 @@ public class ProdutoDAO {
         produto.setCategoria(rs.getString("categoria"));
         return produto;
     }
+    public boolean reajustarPrecoProduto(Produto produto, double percentual) {
+    String sql = "UPDATE tb_produtos SET preco = preco * (1 + ? / 100) WHERE id_produto = ?";
+    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+        stmt.setDouble(1, percentual);
+        stmt.setInt(2, produto.getIdProduto());
+
+        stmt.execute();
+        return true;
+
+    } catch (SQLException e) {
+        System.out.println("Erro: " + e.getMessage());
+        throw new RuntimeException(e);
+    }
+}
+
 }

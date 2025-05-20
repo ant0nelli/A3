@@ -1,7 +1,7 @@
 package Model;
 
 public class Categoria {
-    private int id;
+    private int id_categoria;
     private String nome;
     private String tamanho;
     private String embalagem;
@@ -12,8 +12,8 @@ public class Categoria {
     }
 
     // Construtor com parametro
-    public Categoria(int id, String nome, String tamanho, String embalagem) {
-        this.id = id;
+    public Categoria(int id_categoria, String nome, String tamanho, String embalagem) {
+        this.id_categoria = id_categoria;
         this.nome = nome;
         this.tamanho = tamanho;
         this.embalagem = embalagem;
@@ -21,10 +21,10 @@ public class Categoria {
 
     // Get e setters
     public int getId() {
-        return id;
+        return id_categoria;
     }
     public void setId(int id) {
-        this.id = id;
+        this.id_categoria = id_categoria;
     }
 
     public String getNome() {
