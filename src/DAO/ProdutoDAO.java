@@ -14,24 +14,26 @@ public class ProdutoDAO {
     }
 
     public void inserir(Produto produto) throws SQLException {
-        String sql = "INSERT INTO produtos (nome, preco, unidade, quantidade_estoque, quantidade_min_estoque, quantidade_max_estoque, categoria) " +
+        String sql = "INSERT INTO produtos (id_produto, nome, preco, unidade, quantidade_estoque, quantidade_min_estoque, quantidade_max_estoque, categoria) " +
                      "VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, produto.getNome());
-            stmt.setDouble(2, produto.getPreco());
-            stmt.setString(3, produto.getUnidade());
-            stmt.setInt(4, produto.getQuantidadeEstoque());
-            stmt.setInt(5, produto.getQuantidadeMinEstoque());
-            stmt.setInt(6, produto.getQuantidadeMaxEstoque());
-            stmt.setString(7, produto.getCategoria());
+            stmt.setInt(1, produto.getIdProduto());
+            stmt.setString(2, produto.getNome());
+            stmt.setDouble(3, produto.getPreco());
+            stmt.setString(4, produto.getUnidade());
+            stmt.setInt(5, produto.getQuantidadeEstoque());
+            stmt.setInt(6, produto.getQuantidadeMinEstoque());
+            stmt.setInt(7, produto.getQuantidadeMaxEstoque());
+            stmt.setString(8, produto.getCategoria());
             stmt.executeUpdate();
         }
     }
 
     public void atualizar(Produto produto) throws SQLException {
-        String sql = "UPDATE produtos SET nome = ?, preco = ?, unidade = ?, quantidade_estoque = ?, quantidade_min_estoque = ?, quantidade_max_estoque = ?, categoria = ? " +
+        String sql = "UPDATE produtos SET id_produto = ? nome = ?, preco = ?, unidade = ?, quantidade_estoque = ?, quantidade_min_estoque = ?, quantidade_max_estoque = ?, categoria = ? " +
                      "WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, produto.getIdProduto());
             stmt.setString(1, produto.getNome());
             stmt.setDouble(2, produto.getPreco());
             stmt.setString(3, produto.getUnidade());
@@ -39,23 +41,22 @@ public class ProdutoDAO {
             stmt.setInt(5, produto.getQuantidadeMinEstoque());
             stmt.setInt(6, produto.getQuantidadeMaxEstoque());
             stmt.setString(7, produto.getCategoria());
-            stmt.setInt(8, produto.getId());
             stmt.executeUpdate();
         }
     }
 
-    public void deletar(int id) throws SQLException {
-        String sql = "DELETE FROM produtos WHERE id = ?";
+    public void deletar(int id_produto) throws SQLException {
+        String sql = "DELETE FROM produtos WHERE id_produto = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, id);
+            stmt.setInt(1, id_produto);
             stmt.executeUpdate();
         }
     }
 
-    public Produto buscarPorId(int id) throws SQLException {
-        String sql = "SELECT * FROM produtos WHERE id = ?";
+    public Produto buscarPorId(int id_produto) throws SQLException {
+        String sql = "SELECT * FROM produtos WHERE id_produto = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, id);
+            stmt.setInt(1, id_produto);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     return mapearProduto(rs);
@@ -79,7 +80,7 @@ public class ProdutoDAO {
 
     private Produto mapearProduto(ResultSet rs) throws SQLException {
         Produto produto = new Produto();
-        produto.setId(rs.getInt("id"));
+        produto.setIdProduto(rs.getInt("id_produto"));
         produto.setNome(rs.getString("nome"));
         produto.setPreco(rs.getDouble("preco"));
         produto.setUnidade(rs.getString("unidade"));

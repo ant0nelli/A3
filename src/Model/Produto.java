@@ -1,7 +1,7 @@
 package Model;
 
 public class Produto {
-    private int id;
+    private int id_produto;
     private String nome;
     private double preco;
     private String unidade;
@@ -15,8 +15,8 @@ public class Produto {
 
     }
     //Construtor com prarametro
-    public Produto(int id, String nome, double preco, String unidade,int quantidade_estoque, int quantidade_min_estoque, int quantidade_max_estoque, String categoria) {
-        this.id = id;
+    public Produto(int id_produto, String nome, double preco, String unidade,int quantidade_estoque, int quantidade_min_estoque, int quantidade_max_estoque, String categoria) {
+        this.id_produto = id_produto;
         this.nome = nome;
         this.preco = preco;
         this.unidade = unidade;
@@ -26,12 +26,12 @@ public class Produto {
         this.categoria = categoria;
     }
 
-    public int getId() {
-        return id;
+    public int getIdProduto() {
+        return id_produto;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdProduto(int id_produto) {
+        this.id_produto = id_produto;
     }
 
     public String getNome() {
