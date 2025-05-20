@@ -18,7 +18,7 @@ public class CategoriaDAO{
     }
     //Criação
     public boolean insertCategoria (Categoria categoria){
-    String sql = "INSERT INTO tb_categorias (id, nome, tamanho, embalagem) VALUES (?, ?, ?, ?)";
+    String sql = "INSERT INTO tb_categorias (id_categoria , nome, tamanho, embalagem) VALUES (?, ?, ?, ?)";
     try (Connection conn = conectar();
          PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -47,7 +47,7 @@ public class CategoriaDAO{
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql)){
                 while (rs.next()){
-                    int id = rs.getInt("id");
+                    int id = rs.getInt("id_categoria");
                     String nome = rs.getString("nome");
                     String tamanho = rs.getString("tamanho");
                     String embalagem = rs.getString("embalagem");
@@ -68,7 +68,7 @@ public class CategoriaDAO{
 
     //Update
     public boolean updateCategoria(Categoria categoria){
-        String sql = "UPDATE tb_categorias set nome = ?, tamanho = ?, embalagem = ? WHERE id = ?";
+        String sql = "UPDATE tb_categorias set nome = ?, tamanho = ?, embalagem = ? WHERE id_categoria = ?";
         try (Connection conn = conectar();
             PreparedStatement stmt = conn.prepareStatement(sql)){
             
@@ -89,7 +89,7 @@ public class CategoriaDAO{
 
     //Remove
     public boolean deleteCategoria(Categoria categoria){
-        String sql = ("DELETE from tb_categorias WHERE id = ? ");
+        String sql = ("DELETE from tb_categorias WHERE id_categoria = ? ");
         try (Connection conn = conectar();
             PreparedStatement stmt = conn.prepareStatement(sql)){
                 
