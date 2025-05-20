@@ -18,14 +18,13 @@ public class CategoriaDAO{
     }
     //Criação
     public boolean insertCategoria (Categoria categoria){
-    String sql = "INSERT INTO tb_categorias (id_categoria , nome, tamanho, embalagem) VALUES (?, ?, ?, ?)";
+    String sql = "INSERT INTO tb_categorias (nome, tamanho, embalagem) VALUES (?, ?, ?)";
     try (Connection conn = conectar();
          PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-        stmt.setInt(1, categoria.getId());
-        stmt.setString(2, categoria.getNome());
-        stmt.setString(3, categoria.getTamanho());
-        stmt.setString(4, categoria.getEmbalagem());
+        stmt.setString(1, categoria.getNome());
+        stmt.setString(2, categoria.getTamanho());
+        stmt.setString(3, categoria.getEmbalagem());
 
         stmt.executeUpdate();  
         stmt.close();
