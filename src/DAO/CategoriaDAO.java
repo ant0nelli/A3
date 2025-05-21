@@ -20,7 +20,7 @@ public class CategoriaDAO{
     /**
          * @return 
      */
-    public static Connection conectar() { //Método que realiza conexão com o banco de dados
+    public static Connection conectar() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(
@@ -34,7 +34,7 @@ public class CategoriaDAO{
         return null;
     }
 
-    //Insert de dados na tabela categoria
+    //Criação
     public boolean insertCategoria (Categoria categoria){
     String sql = "INSERT INTO tb_categorias (nome, tamanho, embalagem) VALUES (?, ?, ?)";
     try (Connection conn = conectar();
@@ -83,7 +83,7 @@ public class CategoriaDAO{
         this.ListaCategorias = ListaCategorias;
     }
 
-    //Update dos dados pelo id
+    //Update
     public boolean updateCategoria(Categoria categoria){
         String sql = "UPDATE tb_categorias set nome = ?, tamanho = ?, embalagem = ? WHERE id_categoria = ?";
         try (Connection conn = conectar();
@@ -104,7 +104,7 @@ public class CategoriaDAO{
         }
     }
 
-    //Remoção pelo id
+    //Remove
     public boolean deleteCategoria(Categoria categoria){
         String sql = ("DELETE from tb_categorias WHERE id_categoria = ? ");
         try (Connection conn = conectar();

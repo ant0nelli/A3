@@ -18,6 +18,8 @@ public class CriarCategoria extends javax.swing.JFrame {
      */
     public CriarCategoria() {
         initComponents();
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
     }
 
     /**

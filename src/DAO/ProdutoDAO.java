@@ -10,22 +10,21 @@ import java.util.logging.Logger;
 public class ProdutoDAO {
     private Connection connection;
 
-    //Método que realiza conexão com o banco de dados
-    public static Connection conectar() {
-            try {
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/db_estoque", "root", "root123"
-                );
-                return con;
+public static Connection conectar() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/db_estoque", "root", "root123"
+            );
+            return con;
 
-            } catch (ClassNotFoundException | SQLException ex) {
-                Logger.getLogger(CategoriaDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            return null;
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(CategoriaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return null;
+    }
 
-    //Método para atulizar os pordutos
+
     public void atualizar(Produto produto) throws SQLException {
         String sql = "UPDATE produtos SET id_produto = ? nome = ?, preco = ?, unidade = ?, quantidade_estoque = ?, quantidade_min_estoque = ?, quantidade_max_estoque = ?, categoria = ? " +
                      "WHERE id = ?";
@@ -41,7 +40,7 @@ public class ProdutoDAO {
             stmt.executeUpdate();
         }
     }
-    //Método para excluir dados
+
     public void deletar(int id_produto) throws SQLException {
         String sql = "DELETE FROM produtos WHERE id_produto = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -49,7 +48,7 @@ public class ProdutoDAO {
             stmt.executeUpdate();
         }
     }
-    //Mètodo para buscar por id
+
     public Produto buscarPorId(int id_produto) throws SQLException {
         String sql = "SELECT * FROM produtos WHERE id_produto = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -62,7 +61,7 @@ public class ProdutoDAO {
         }
         return null;
     }
-    //Listar os dados
+
     public List<Produto> listarTodos() throws SQLException {
         List<Produto> produtos = new ArrayList<>();
         String sql = "SELECT * FROM produtos";
@@ -88,24 +87,23 @@ public class ProdutoDAO {
         return produto;
     }
 
-    //Reajuste Percentual
+    
     public boolean reajustarPrecoProduto(Produto produto, double percentual) {
-        String sql = "UPDATE tb_produtos SET preco = preco * (1 + ? / 100) WHERE id_produto = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+    String sql = "UPDATE tb_produtos SET preco = preco * (1 + ? / 100) WHERE id_produto = ?";
+    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 
-            stmt.setDouble(1, percentual);
-            stmt.setInt(2, produto.getIdProduto());
+        stmt.setDouble(1, percentual);
+        stmt.setInt(2, produto.getIdProduto());
 
-            stmt.execute();
-            stmt.close();
-            return true;
+        stmt.execute();
+        stmt.close();
+        return true;
 
-        } catch (SQLException e) {
-            System.out.println("Erro: " + e.getMessage());
-            throw new RuntimeException(e);
-        }
+    } catch (SQLException e) {
+        System.out.println("Erro: " + e.getMessage());
+        throw new RuntimeException(e);
     }
-
+}
     //Insert
     public boolean insertProduto(Produto produto) {
         String sql = "INSERT INTO tb_produtos (nome, preco, unidade, quantidade_estoque, quantidade_min_estoque, quantidade_max_estoque, id_categoria) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -125,9 +123,10 @@ public class ProdutoDAO {
 
         return true;
 
-        } catch (SQLException e) {
-            System.out.println("Erro:" + e);
-            throw new RuntimeException(e);
-        }
+    } catch (SQLException e) {
+        System.out.println("Erro:" + e);
+        throw new RuntimeException(e);
     }
+}
+
 }

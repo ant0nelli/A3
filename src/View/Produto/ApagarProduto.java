@@ -15,6 +15,8 @@ public class ApagarProduto extends javax.swing.JFrame {
      */
     public ApagarProduto() {
         initComponents();
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
     }
 
     /**

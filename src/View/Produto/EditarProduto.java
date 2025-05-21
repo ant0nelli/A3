@@ -15,6 +15,8 @@ public class EditarProduto extends javax.swing.JFrame {
      */
     public EditarProduto() {
         initComponents();
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
     }
 
     /**

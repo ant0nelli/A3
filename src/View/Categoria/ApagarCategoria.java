@@ -15,6 +15,8 @@ public class ApagarCategoria extends javax.swing.JFrame {
      */
     public ApagarCategoria() {
         initComponents();
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
     }
 
     /**

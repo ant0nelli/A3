@@ -15,6 +15,8 @@ public class EditarCategoria extends javax.swing.JFrame {
      */
     public EditarCategoria() {
         initComponents();
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
     }
 
     /**

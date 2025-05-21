@@ -4,9 +4,10 @@
  */
 package View.Produto;
 
-import javax.swing.JOptionPane;
+import DAO.ProdutoDAO; 
+
 import Model.Produto;
-import DAO.ProdutoDAO;
+import javax.swing.JOptionPane;
 
 
 /**
@@ -20,6 +21,8 @@ public class CriarProduto extends javax.swing.JFrame {
      */
     public CriarProduto() {
         initComponents();
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
     }
 
     /**
@@ -229,6 +232,9 @@ public class CriarProduto extends javax.swing.JFrame {
         }
     dispose();
     }
+
+    
+
 //GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
