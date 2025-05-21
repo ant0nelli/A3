@@ -1,31 +1,30 @@
 package DAO;
 
 import Model.Produto;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ProdutoDAO {
     private Connection connection;
 
-    public ProdutoDAO(Connection connection) {
-        this.connection = connection;
+public static Connection conectar() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/db_estoque", "root", "root123"
+            );
+            return con;
+
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(CategoriaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
-    public void inserir(Produto produto) throws SQLException {
-        String sql = "INSERT INTO produtos (nome, preco, unidade, quantidade_estoque, quantidade_min_estoque, quantidade_max_estoque, categoria) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, produto.getNome());
-            stmt.setDouble(2, produto.getPreco());
-            stmt.setString(3, produto.getUnidade());
-            stmt.setInt(4, produto.getQuantidadeEstoque());
-            stmt.setInt(5, produto.getQuantidadeMinEstoque());
-            stmt.setInt(6, produto.getQuantidadeMaxEstoque());
-            stmt.setString(7, produto.getCategoria());
-            stmt.executeUpdate();
-        }
-    }
 
     public void atualizar(Produto produto) throws SQLException {
         String sql = "UPDATE produtos SET id_produto = ? nome = ?, preco = ?, unidade = ?, quantidade_estoque = ?, quantidade_min_estoque = ?, quantidade_max_estoque = ?, categoria = ? " +
@@ -96,6 +95,7 @@ public class ProdutoDAO {
         stmt.setInt(2, produto.getIdProduto());
 
         stmt.execute();
+        stmt.close();
         return true;
 
     } catch (SQLException e) {

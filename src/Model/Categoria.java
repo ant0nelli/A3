@@ -47,4 +47,5 @@ public class Categoria {
     public void setEmbalagem(String embalagem) {
         this.embalagem = embalagem;
     }
+
 }

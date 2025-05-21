@@ -4,6 +4,9 @@
  */
 package View.Categoria;
 
+import DAO.CategoriaDAO;
+import java.sql.Connection;
+
 /**
  *
  * @author arthu
@@ -54,16 +57,13 @@ public class CriarCategoria extends javax.swing.JFrame {
             }
         });
 
-        jTextField2.setText("jTextField1");
         jTextField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField2ActionPerformed(evt);
             }
         });
 
-        jTextField5.setText("jTextField1");
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequena", "Media", "Grande" }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -132,7 +132,34 @@ public class CriarCategoria extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String nome = jTextField2.getText();
+        String tamanho = jComboBox1.getSelectedItem().toString();
+        String embalagem = jTextField5.getText();
+
+        try { // usa sua classe com o método conectar()
+            // usa sua classe com o método conectar()
+            Connection conn = CategoriaDAO.conectar();
+
+            if (conn != null) {
+                String sql = "INSERT INTO tb_categorias (nome, tamanho, embalagem) VALUES (?, ?, ?)";
+                java.sql.PreparedStatement stmt = conn.prepareStatement(sql);
+                stmt.setString(1, nome);
+                stmt.setString(2,tamanho);
+                stmt.setString(3, embalagem);
+;
+
+                stmt.executeUpdate();
+                javax.swing.JOptionPane.showMessageDialog(this, "Produto criado com sucesso!");
+                conn.close();
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Erro na conexão com o banco de dados.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            javax.swing.JOptionPane.showMessageDialog(this, "Erro ao salvar produto: " + e.getMessage());
+        }
         dispose();
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed

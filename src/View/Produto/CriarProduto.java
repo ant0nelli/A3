@@ -3,6 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package View.Produto;
+import java.sql.Connection;
+
+import DAO.CategoriaDAO; 
+
 
 /**
  *
@@ -41,6 +45,8 @@ public class CriarProduto extends javax.swing.JFrame {
         jTextField4 = new javax.swing.JTextField();
         jTextField5 = new javax.swing.JTextField();
         jTextField6 = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        jTextField7 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -78,6 +84,15 @@ public class CriarProduto extends javax.swing.JFrame {
 
         jTextField6.setText("jTextField1");
 
+        jLabel8.setText("Categoria");
+
+        jTextField7.setText("jTextField1");
+        jTextField7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField7ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -106,7 +121,11 @@ public class CriarProduto extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel6)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addGap(114, 114, 114)
+                                .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(252, 252, 252)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -150,9 +169,13 @@ public class CriarProduto extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                 .addComponent(jButton1)
-                .addGap(41, 41, 41))
+                .addGap(25, 25, 25))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(69, 69, 69)
@@ -177,8 +200,45 @@ public class CriarProduto extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+        String nome = jTextField2.getText();
+        String preco = jTextField1.getText();
+        String unidade = jTextField5.getText();
+        String quantidade_estoque = jTextField3.getText();
+        String quantidade_max_estoque = jTextField4.getText();
+        String quantidade_min_estoque = jTextField6.getText();
+        String id_categoria = jTextField7.getText();
+
+        try { // usa sua classe com o método conectar()
+            // usa sua classe com o método conectar()
+            Connection conn = CategoriaDAO.conectar();
+
+            if (conn != null) {
+                String sql = "INSERT INTO tb_produtos (nome, preco, unidade, quantidade_estoque, quantidade_max_estoque, quantidade_min_estoque, id_categoria) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                java.sql.PreparedStatement stmt = conn.prepareStatement(sql);
+                stmt.setString(1, nome);
+                stmt.setDouble(2, Double.parseDouble(preco));
+                stmt.setString(3, unidade);
+                stmt.setInt(4, Integer.parseInt(quantidade_estoque));
+                stmt.setInt(5, Integer.parseInt(quantidade_max_estoque));
+                stmt.setInt(6, Integer.parseInt(quantidade_min_estoque));
+                stmt.setInt(7, Integer.parseInt(id_categoria));
+
+                stmt.executeUpdate();
+                javax.swing.JOptionPane.showMessageDialog(this, "Produto criado com sucesso!");
+                conn.close();
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Erro na conexão com o banco de dados.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            javax.swing.JOptionPane.showMessageDialog(this, "Erro ao salvar produto: " + e.getMessage());
+        }
+    }
+//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField7ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -224,6 +284,7 @@ public class CriarProduto extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
@@ -231,5 +292,6 @@ public class CriarProduto extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField jTextField7;
     // End of variables declaration//GEN-END:variables
 }
