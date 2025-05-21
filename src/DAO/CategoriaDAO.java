@@ -1,18 +1,22 @@
 package DAO;
+
 import Model.Categoria;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class CategoriaDAO{
     //Conexão com MYSQL
     public Connection conectar(){
         try {
-            String url = "jdbc:mysql://localhost:3306/db_estoque";
-            String user = "root";
-            String password = "root123";
-            return DriverManager.getConnection(url,user,password);
-        } catch (SQLException e) {
-            System.out.println("Não conectou");
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_estoque", "root", "root123");
+            System.out.println(con);
+            return con;
+            
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(CategoriaDAO.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
     }
