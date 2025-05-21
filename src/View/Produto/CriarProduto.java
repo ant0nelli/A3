@@ -3,9 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package View.Produto;
-import java.sql.Connection;
 
-import DAO.CategoriaDAO; 
+import javax.swing.JOptionPane;
+import Model.Produto;
+import DAO.ProdutoDAO;
 
 
 /**
@@ -200,39 +201,33 @@ public class CriarProduto extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String nome = jTextField2.getText();
-        String preco = jTextField1.getText();
-        String unidade = jTextField5.getText();
-        String quantidade_estoque = jTextField3.getText();
-        String quantidade_max_estoque = jTextField4.getText();
-        String quantidade_min_estoque = jTextField6.getText();
-        String id_categoria = jTextField7.getText();
 
-        try { // usa sua classe com o método conectar()
-            // usa sua classe com o método conectar()
-            Connection conn = CategoriaDAO.conectar();
+       try {
+            Produto produtoNovo = new Produto();
 
-            if (conn != null) {
-                String sql = "INSERT INTO tb_produtos (nome, preco, unidade, quantidade_estoque, quantidade_max_estoque, quantidade_min_estoque, id_categoria) VALUES (?, ?, ?, ?, ?, ?, ?)";
-                java.sql.PreparedStatement stmt = conn.prepareStatement(sql);
-                stmt.setString(1, nome);
-                stmt.setDouble(2, Double.parseDouble(preco));
-                stmt.setString(3, unidade);
-                stmt.setInt(4, Integer.parseInt(quantidade_estoque));
-                stmt.setInt(5, Integer.parseInt(quantidade_max_estoque));
-                stmt.setInt(6, Integer.parseInt(quantidade_min_estoque));
-                stmt.setInt(7, Integer.parseInt(id_categoria));
+            produtoNovo.setNome(jTextField2.getText());
+            produtoNovo.setPreco(Double.parseDouble(jTextField1.getText()));
+            produtoNovo.setUnidade(jTextField5.getText());
+            produtoNovo.setQuantidadeEstoque(Integer.parseInt(jTextField3.getText()));
+            produtoNovo.setQuantidadeMinEstoque(Integer.parseInt(jTextField4.getText()));
+            produtoNovo.setQuantidadeMaxEstoque(Integer.parseInt(jTextField6.getText()));
+            produtoNovo.setCategoria(jTextField7.getText());
 
-                stmt.executeUpdate();
-                javax.swing.JOptionPane.showMessageDialog(this, "Produto criado com sucesso!");
-                conn.close();
-            } else {
-                javax.swing.JOptionPane.showMessageDialog(this, "Erro na conexão com o banco de dados.");
+            ProdutoDAO dao = new ProdutoDAO();
+            boolean sucesso = dao.insertProduto(produtoNovo);
+
+            if(sucesso){
+                JOptionPane.showMessageDialog(null, "Produto inserido com sucesso!");
+            }else {
+                JOptionPane.showMessageDialog(null, "Erro ao criar seu produto.");
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            javax.swing.JOptionPane.showMessageDialog(this, "Erro ao salvar produto: " + e.getMessage());
+
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Erro: verifique os valores numéricos.");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Erro: " + ex.getMessage());
         }
+    dispose();
     }
 //GEN-LAST:event_jButton1ActionPerformed
 
