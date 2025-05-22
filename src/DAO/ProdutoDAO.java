@@ -25,21 +25,26 @@ public static Connection conectar() {
     }
 
 
-    public void atualizar(Produto produto) throws SQLException {
-        String sql = "UPDATE produtos SET id_produto = ? nome = ?, preco = ?, unidade = ?, quantidade_estoque = ?, quantidade_min_estoque = ?, quantidade_max_estoque = ?, categoria = ? " +
-                     "WHERE id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, produto.getIdProduto());
-            stmt.setString(2, produto.getNome());
-            stmt.setDouble(3, produto.getPreco());
-            stmt.setString(4, produto.getUnidade());
-            stmt.setInt(5, produto.getQuantidadeEstoque());
-            stmt.setInt(6, produto.getQuantidadeMinEstoque());
-            stmt.setInt(7, produto.getQuantidadeMaxEstoque());
-            stmt.setString(8, produto.getCategoria());
+    public boolean atualizar(Produto produto){
+        String sql = "UPDATE tb_produtos SET nome = ?, preco = ?, unidade = ?, quantidade_estoque = ?, quantidade_min_estoque = ?, quantidade_max_estoque = ? WHERE id_produto = ?";
+        try (Connection conn = conectar();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, produto.getNome());
+            stmt.setDouble(2, produto.getPreco());
+            stmt.setString(3, produto.getUnidade());
+            stmt.setInt(4, produto.getQuantidadeEstoque());
+            stmt.setInt(5, produto.getQuantidadeMinEstoque());
+            stmt.setInt(6, produto.getQuantidadeMaxEstoque());
+            stmt.setString(7, produto.getCategoria());
             stmt.executeUpdate();
-        }
+            stmt.close();
+            return true;
+        }   catch (SQLException e) {
+        System.out.println("Erro: " + e.getMessage());
+        throw new RuntimeException(e);
     }
+}
+
 
     public void deletar(int id_produto) throws SQLException {
         String sql = "DELETE FROM produtos WHERE id_produto = ?";
