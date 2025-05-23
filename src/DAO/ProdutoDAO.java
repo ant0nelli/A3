@@ -141,7 +141,6 @@ public static Connection conectar() {
         throw new RuntimeException(e);
     }
 }
-    //teste buscar por nome
-    
+
 
 }

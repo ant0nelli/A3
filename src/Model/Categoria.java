@@ -48,4 +48,8 @@ public class Categoria {
         this.embalagem = embalagem;
     }
 
+    @Override
+    public String toString(){
+        return getNome();
+    }
 }
