@@ -9,6 +9,12 @@ import java.util.logging.Logger;
 
 public class ProdutoDAO {
     private Connection connection;
+    
+    
+    //Construtor para conexão ñao ficar null
+    public ProdutoDAO(){
+        this.connection = conectar();
+    }
 
 public static Connection conectar() {
         try {
@@ -35,7 +41,8 @@ public static Connection conectar() {
             stmt.setInt(4, produto.getQuantidadeEstoque());
             stmt.setInt(5, produto.getQuantidadeMinEstoque());
             stmt.setInt(6, produto.getQuantidadeMaxEstoque());
-            stmt.setString(7, produto.getCategoria());
+            //stmt.setString(7, produto.getCategoria());
+            stmt.setInt(7, produto.getIdProduto());
             stmt.executeUpdate();
             stmt.close();
             return true;
@@ -55,7 +62,7 @@ public static Connection conectar() {
     }
 
     public Produto buscarPorId(int id_produto) throws SQLException {
-        String sql = "SELECT * FROM produtos WHERE id_produto = ?";
+        String sql = "SELECT * FROM tb_produtos WHERE id_produto = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, id_produto);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -69,7 +76,7 @@ public static Connection conectar() {
 
     public List<Produto> listarTodos() throws SQLException {
         List<Produto> produtos = new ArrayList<>();
-        String sql = "SELECT * FROM produtos";
+        String sql = "SELECT * FROM tb_produtos";
         try (PreparedStatement stmt = connection.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
@@ -88,7 +95,7 @@ public static Connection conectar() {
         produto.setQuantidadeEstoque(rs.getInt("quantidade_estoque"));
         produto.setQuantidadeMinEstoque(rs.getInt("quantidade_min_estoque"));
         produto.setQuantidadeMaxEstoque(rs.getInt("quantidade_max_estoque"));
-        produto.setCategoria(rs.getString("categoria"));
+        produto.setCategoria(rs.getString("id_categoria"));
         return produto;
     }
 
@@ -122,6 +129,7 @@ public static Connection conectar() {
             stmt.setInt(5, produto.getQuantidadeMinEstoque());
             stmt.setInt(6, produto.getQuantidadeMaxEstoque());
             stmt.setString(7, produto.getCategoria());
+            //stmt.setInt(7, produto.getIdProduto());
 
             stmt.executeUpdate();
             stmt.close();
@@ -133,5 +141,7 @@ public static Connection conectar() {
         throw new RuntimeException(e);
     }
 }
+    //teste buscar por nome
+    
 
 }
