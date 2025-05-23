@@ -27,6 +27,7 @@ public class EditarProduto extends javax.swing.JFrame {
         initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         atualizarComboBox();
+        produtoComboBox.setSelectedItem(0);
 
 
     }
@@ -57,6 +58,10 @@ public class EditarProduto extends javax.swing.JFrame {
         produtoComboBox = new javax.swing.JComboBox<>();
         btnVisualiarProduto = new javax.swing.JButton();
         ep_qnt_min_estoque = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        reajusteComboBox = new javax.swing.JComboBox<>();
+        ep_reajuste_percentual = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         TableEditarProduto = new javax.swing.JTable();
@@ -111,6 +116,18 @@ public class EditarProduto extends javax.swing.JFrame {
             }
         });
 
+        jLabel9.setText("Reajuste percentual");
+
+        reajusteComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "+", "-" }));
+
+        ep_reajuste_percentual.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ep_reajuste_percentualActionPerformed(evt);
+            }
+        });
+
+        jLabel10.setText("%");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -118,12 +135,15 @@ public class EditarProduto extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel3))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(16, 16, 16)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel7)
                                 .addGap(18, 18, 18)
-                                .addComponent(ep_qnt_min_estoque))
+                                .addComponent(ep_qnt_min_estoque, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -147,14 +167,19 @@ public class EditarProduto extends javax.swing.JFrame {
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(jLabel8)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(produtoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(produtoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(btnVisualiarProduto)
-                                    .addComponent(jButton1))
-                                .addGap(0, 0, Short.MAX_VALUE))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel3)))
-                .addContainerGap(102, Short.MAX_VALUE))
+                                    .addComponent(jButton1)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel9)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(reajusteComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(ep_reajuste_percentual, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel10)))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
+                .addGap(53, 53, 53))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -183,15 +208,21 @@ public class EditarProduto extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(ep_qnt_min_estoque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(32, 32, 32)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(reajusteComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ep_reajuste_percentual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10))
+                .addGap(80, 80, 80)
                 .addComponent(jButton1)
-                .addGap(37, 37, 37)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(produtoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnVisualiarProduto)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(31, 31, 31))
         );
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
@@ -223,12 +254,12 @@ public class EditarProduto extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 525, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 720, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(20, 20, 20)
                         .addComponent(jLabel1)
                         .addGap(28, 28, 28)
-                        .addComponent(jScrollPane1)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 622, Short.MAX_VALUE)
                         .addGap(23, 23, 23)))
                 .addContainerGap())
         );
@@ -241,7 +272,16 @@ public class EditarProduto extends javax.swing.JFrame {
         try{
             ProdutoDAO atualizarComboBox = new ProdutoDAO();
             List<Produto> produtos = atualizarComboBox.listarTodos();
+            
             produtoComboBox.removeAllItems();
+            
+            //Deixar um espaço vazio no meu combobox para forçar o usuário a selecionar alguma coisa e não alterar um produto acidentalmente
+            Produto placeholder = new Produto();
+            placeholder.setIdProduto(0);
+            placeholder.setNome("Selecione um produto.");
+            produtoComboBox.addItem(placeholder);
+            
+            
             for (Produto p : produtos){
                 produtoComboBox.addItem(p);
             }
@@ -270,8 +310,47 @@ public class EditarProduto extends javax.swing.JFrame {
             Produto editarProduto = new Produto();
             
             Produto selecionado = (Produto) produtoComboBox.getSelectedItem();
-
+            ProdutoDAO dao = new ProdutoDAO();
             
+            boolean aplicouReajuste = false;
+            
+            double precoOriginalBanco = selecionado.getPreco(); 
+            double precoDigitado = Double.parseDouble(ep_preco.getText()); 
+            
+
+            //Reajuste percentual
+            if (!ep_reajuste_percentual.getText().trim().isEmpty()) { 
+                try {
+                    double percentual = Double.parseDouble(ep_reajuste_percentual.getText());
+                    
+                    
+                    if (reajusteComboBox.getSelectedItem().toString().equals("-")) {
+                        percentual *= -1;
+                    }
+                                        
+                    boolean reajusteFeito = dao.reajustarPrecoProduto(selecionado, percentual);
+                    
+                    if (reajusteFeito) {
+                        aplicouReajuste = true;
+                        double novoPreco = precoDigitado * (1 + percentual / 100);
+                        
+                        ep_preco.setText(String.valueOf(novoPreco));
+                        editarProduto.setPreco(novoPreco);
+                        System.out.println("Novo preço calculado: " + novoPreco);
+                        
+                        if (precoDigitado != precoOriginalBanco){
+                            JOptionPane.showMessageDialog(null, String.format("Você alterou o preço manualmente e aplicou um reajuste de %.2f%%.\n\n" + "Preço digitado: R$ %.2f \n" + "Novo preço com reajuste: %.2f", percentual, precoDigitado, novoPreco));
+                        }
+                        
+                    } else {
+                        System.out.println("Reajuste falhou.");
+                    }
+                }catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Valor de reajuste inválido.");
+                }
+            }if (!aplicouReajuste){
+                editarProduto.setPreco(precoDigitado);
+            }
             
             editarProduto.setNome(ep_nome.getText());
             editarProduto.setPreco(Double.parseDouble(ep_preco.getText()));
@@ -279,20 +358,24 @@ public class EditarProduto extends javax.swing.JFrame {
             editarProduto.setQuantidadeEstoque(Integer.parseInt(ep_qnt_estoque.getText()));
             editarProduto.setQuantidadeMinEstoque(Integer.parseInt(ep_qnt_min_estoque.getText()));
             editarProduto.setQuantidadeMaxEstoque(Integer.parseInt(ep_qnt_max_estoque.getText()));
-            //editarProduto.setIdProduto(Integer.parseInt(produtoComboBox.getSelectedItem().toString()));
-           // editarProduto.setCategoria(produtoComboBox.getSelectedItem().toString()); 
-           // editarProduto.serIdCategoria(Integer.parseInt(ep_id_produto.getText()));
            editarProduto.setIdProduto(selecionado.getIdProduto()); //w
-           
-            
-            ProdutoDAO dao = new ProdutoDAO();
+
             boolean sucesso = dao.atualizar(editarProduto);
             if (sucesso){
-                System.out.println("Id usado no where" + editarProduto.getIdProduto());
                 JOptionPane.showMessageDialog(null, "Produto atualizado com sucesso!");
                 atualizarComboBox();
+                //Limpar os campos
+                ep_nome.setText("");
+                ep_preco.setText("");
+                ep_unidade.setText("");
+                ep_qnt_estoque.setText("");
+                ep_qnt_min_estoque.setText("");
+                ep_qnt_max_estoque.setText("");
+                produtoComboBox.setSelectedItem(0);
+                ep_reajuste_percentual.setText("");
+                reajusteComboBox.setSelectedItem(0);
 
-            } else{
+            }else{
                 JOptionPane.showMessageDialog(null, "Erro ao atualizar o produto!");
             }        
         } catch (NumberFormatException ex){
@@ -312,31 +395,17 @@ public class EditarProduto extends javax.swing.JFrame {
     }//GEN-LAST:event_ep_unidadeActionPerformed
 
     private void btnVisualiarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVisualiarProdutoActionPerformed
-        // TODO add your handling code here:
-        /**    try {
-                String nomeSelecionado = produtoComboBox.getSelectedItem().toString();
 
-                ProdutoDAO dao = new ProdutoDAO();
-                
-                Produto produtoCompleto = dao.buscarPorId(nomeSelecionado);
-
-                
-                ep_nome.setText(produtoCompleto.getNome());
-
-            }catch (SQLException ex){
-                    //return ;
-               } 
-      **/      
-
-
-        
-        
         try {
             Produto produtoSelecionado = (Produto) produtoComboBox.getSelectedItem();
             ProdutoDAO dao = new ProdutoDAO();
 
             Produto produtoCompleto = dao.buscarPorId(produtoSelecionado.getIdProduto());
             
+            if (produtoSelecionado.getIdProduto() == 0) {
+                JOptionPane.showMessageDialog(null, "Por favor, selecione um produto válido.");
+                return;
+            }            
 
             if (produtoCompleto != null) {
                 ep_nome.setText(produtoCompleto.getNome());
@@ -364,6 +433,10 @@ public class EditarProduto extends javax.swing.JFrame {
     private void ep_qnt_min_estoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ep_qnt_min_estoqueActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_ep_qnt_min_estoqueActionPerformed
+
+    private void ep_reajuste_percentualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ep_reajuste_percentualActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ep_reajuste_percentualActionPerformed
 
     /**
      * @param args the command line arguments
@@ -408,9 +481,11 @@ public class EditarProduto extends javax.swing.JFrame {
     private javax.swing.JTextField ep_qnt_estoque;
     private javax.swing.JTextField ep_qnt_max_estoque;
     private javax.swing.JTextField ep_qnt_min_estoque;
+    private javax.swing.JTextField ep_reajuste_percentual;
     private javax.swing.JTextField ep_unidade;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -418,8 +493,10 @@ public class EditarProduto extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JComboBox<Model.Produto> produtoComboBox;
+    private javax.swing.JComboBox<String> reajusteComboBox;
     // End of variables declaration//GEN-END:variables
 }
