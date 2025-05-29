@@ -108,10 +108,13 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Produtos com a quantidade abaixo da m&#xed;nima em estoque"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem8ActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem9">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Produtos com a quantidade acima da m&#xed;nima em estoque"/>
+                <Property name="text" type="java.lang.String" value="Produtos com a quantidade acima da m&#xe1;xima em estoque"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem9ActionPerformed"/>

@@ -3,10 +3,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package View.Produto;
+import DAO.CategoriaDAO;
+
+import java.sql.SQLException;
+
 
 import DAO.ProdutoDAO; 
-
+import java.util.List;
 import Model.Produto;
+import Model.Categoria;
+import java.awt.HeadlessException;
 import javax.swing.JOptionPane;
 
 
@@ -15,16 +21,43 @@ import javax.swing.JOptionPane;
  * @author arthu
  */
 public class CriarProduto extends javax.swing.JFrame {
-
+    private Categoria placeholderCategoria;
     /**
      * Creates new form CriarProduto
      */
     public CriarProduto() {
         initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        
+
+        ListarCategoriaComboBox();
 
     }
-
+    //Listar categoria pro combobox
+    private void ListarCategoriaComboBox(){
+        try{
+            CategoriaDAO categoriaDao = new CategoriaDAO();
+            List<Categoria> categorias = categoriaDao.getListaCategorias();
+            
+            categoriaComboBox.removeAllItems();
+            
+            Categoria placeholderCategoria = new Categoria(0, "Selecione uma categoria", "", "");
+            categoriaComboBox.addItem(placeholderCategoria);
+            
+            for(Categoria c : categorias){
+                categoriaComboBox.addItem(c);
+            }
+            
+            categoriaComboBox.setSelectedItem(placeholderCategoria);      
+        }catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro inesperado ao carregar categorias: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        // Imprime o erro no console para depuração
+        
+    }
+    
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -50,7 +83,7 @@ public class CriarProduto extends javax.swing.JFrame {
         jTextField5 = new javax.swing.JTextField();
         jTextField6 = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        jTextField7 = new javax.swing.JTextField();
+        categoriaComboBox = new javax.swing.JComboBox<Model.Categoria>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -76,26 +109,13 @@ public class CriarProduto extends javax.swing.JFrame {
             }
         });
 
-        jTextField1.setText("jTextField1");
-
-        jTextField2.setText("jTextField1");
-
-        jTextField3.setText("jTextField1");
-
-        jTextField4.setText("jTextField1");
-
-        jTextField5.setText("jTextField1");
-
-        jTextField6.setText("jTextField1");
-
-        jLabel8.setText("Categoria");
-
-        jTextField7.setText("jTextField1");
-        jTextField7.addActionListener(new java.awt.event.ActionListener() {
+        jTextField5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField7ActionPerformed(evt);
+                jTextField5ActionPerformed(evt);
             }
         });
+
+        jLabel8.setText("Categoria");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -128,8 +148,8 @@ public class CriarProduto extends javax.swing.JFrame {
                                 .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel8)
-                                .addGap(114, 114, 114)
-                                .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(92, 92, 92)
+                                .addComponent(categoriaComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(252, 252, 252)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -176,7 +196,7 @@ public class CriarProduto extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(categoriaComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addGap(25, 25, 25))
@@ -208,38 +228,89 @@ public class CriarProduto extends javax.swing.JFrame {
        try {
             Produto produtoNovo = new Produto();
 
-            produtoNovo.setNome(jTextField2.getText());
-            produtoNovo.setPreco(Double.parseDouble(jTextField1.getText()));
-            produtoNovo.setUnidade(jTextField5.getText());
-            produtoNovo.setQuantidadeEstoque(Integer.parseInt(jTextField3.getText()));
-            produtoNovo.setQuantidadeMinEstoque(Integer.parseInt(jTextField4.getText()));
-            produtoNovo.setQuantidadeMaxEstoque(Integer.parseInt(jTextField6.getText()));
-            produtoNovo.setCategoria(jTextField7.getText());
+            // 1. Obter a categoria selecionada do ComboBox
+            Categoria categoriaSelecionada = (Categoria) categoriaComboBox.getSelectedItem();
 
+            // Validação da categoria: Garante que uma categoria válida (não o placeholder) foi selecionada
+            if (categoriaSelecionada == null || categoriaSelecionada.getId() == 0) {
+                JOptionPane.showMessageDialog(null, "Por favor, selecione uma categoria válida para o produto.", "Erro de Validação", JOptionPane.WARNING_MESSAGE);
+                return; // Para a execução se a categoria for inválida
+            }
+            // Atribui o ID da categoria selecionada ao novo produto
+            produtoNovo.setIdCategoria(categoriaSelecionada.getId()); 
+            produtoNovo.setNomeCategoria(categoriaSelecionada.getNome()); // Opcional, para manter o objeto completo
+
+            // 2. Obter os dados dos campos de texto
+            produtoNovo.setNome(jTextField2.getText());
+            // Validar e parsear Preço
+            try {
+                produtoNovo.setPreco(Double.parseDouble(jTextField1.getText()));
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Por favor, insira um valor numérico válido para o Preço.", "Erro de Formato", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            produtoNovo.setUnidade(jTextField5.getText());
+            // Validar e parsear Quantidades
+            try {
+                produtoNovo.setQuantidadeEstoque(Integer.parseInt(jTextField3.getText()));
+                produtoNovo.setQuantidadeMinEstoque(Integer.parseInt(jTextField4.getText()));
+                produtoNovo.setQuantidadeMaxEstoque(Integer.parseInt(jTextField6.getText()));
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Por favor, insira valores numéricos válidos para Quantidade em Estoque, Mínima e Máxima.", "Erro de Formato", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            // Remova esta linha, pois 'nomeCategoria' agora vem do ComboBox
+            // produtoNovo.setNomeCategoria(jTextField7.getText()); 
+            // Se jTextField7 era para o ID, ele deve ser removido ou transformado em label.
+            // Se jTextField7 era para o nome da categoria digitado, ele será substituído pelo ComboBox.
+
+            // --- PONTOS DE DEPURACÃO ANTES DO DAO ---
+            System.out.println("\n--- Produto a ser criado (dados FINAIS) ---");
+            System.out.println("  Nome: " + produtoNovo.getNome());
+            System.out.println("  Preço: " + produtoNovo.getPreco());
+            System.out.println("  Unidade: " + produtoNovo.getUnidade());
+            System.out.println("  Quantidade Estoque: " + produtoNovo.getQuantidadeEstoque());
+            System.out.println("  Quantidade Mínima: " + produtoNovo.getQuantidadeMinEstoque());
+            System.out.println("  Quantidade Máxima: " + produtoNovo.getQuantidadeMaxEstoque());
+            System.out.println("  ID Categoria a ser enviado para o DAO: " + produtoNovo.getIdCategoria());
+            System.out.println("  Nome Categoria (para UI): " + produtoNovo.getNomeCategoria());
+            System.out.println("----------------------------------------------\n");
+
+            // 3. Chamar o DAO para inserir o produto
             ProdutoDAO dao = new ProdutoDAO();
             boolean sucesso = dao.insertProduto(produtoNovo);
 
             if(sucesso){
                 JOptionPane.showMessageDialog(null, "Produto inserido com sucesso!");
-            }else {
-                JOptionPane.showMessageDialog(null, "Erro ao criar seu produto.");
+               
+                jTextField1.setText(""); // Preço
+                jTextField2.setText(""); // Nome
+                jTextField3.setText(""); // Quantidade Estoque
+                jTextField4.setText(""); // Quantidade Mínima Estoque
+                jTextField5.setText(""); // Unidade
+                jTextField6.setText(""); // Quantidade Máxima Estoque
+                categoriaComboBox.setSelectedItem(placeholderCategoria); // Volta para o placeholder da categoria
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Erro ao criar seu produto.", "Erro de Inserção", JOptionPane.ERROR_MESSAGE);
             }
 
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(null, "Erro: verifique os valores numéricos.");
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Erro: " + ex.getMessage());
+        } catch (HeadlessException ex) { // Captura exceções específicas
+            JOptionPane.showMessageDialog(null, "Erro inesperado: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception ex) { // Captura qualquer outra exceção não tratada
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro ao criar o produto: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
-    dispose();
+    
     }
 
     
 
 //GEN-LAST:event_jButton1ActionPerformed
 
-    private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
+    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField7ActionPerformed
+    }//GEN-LAST:event_jTextField5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -257,26 +328,24 @@ public class CriarProduto extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CriarProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CriarProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CriarProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(CriarProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CriarProduto().setVisible(true);
+                CriarProduto tela = new CriarProduto();
+                tela.setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<Model.Categoria> categoriaComboBox;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -293,6 +362,5 @@ public class CriarProduto extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
     // End of variables declaration//GEN-END:variables
 }

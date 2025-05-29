@@ -50,6 +50,6 @@ public class Categoria {
 
     @Override
     public String toString(){
-        return getNome();
+        return this.nome;
     }
 }

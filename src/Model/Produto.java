@@ -17,14 +17,15 @@ public class Produto {
     private int quantidade_estoque;
     private int quantidade_min_estoque;
     private int quantidade_max_estoque;
-    private String categoria;
+    private int id_categoria;
+    private String nome_categoria;
 
     //Construtor vazio
     public Produto() {
 
     }
     //Construtor com prarametro
-    public Produto(int id_produto, String nome, double preco, String unidade,int quantidade_estoque, int quantidade_min_estoque, int quantidade_max_estoque, String categoria) {
+    public Produto(int id_produto, String nome, double preco, String unidade,int quantidade_estoque, int quantidade_min_estoque, int quantidade_max_estoque, int id_categoria, String nome_categoria) {
         this.id_produto = id_produto;
         this.nome = nome;
         this.preco = preco;
@@ -32,7 +33,8 @@ public class Produto {
         this.quantidade_estoque = quantidade_estoque;
         this.quantidade_min_estoque = quantidade_min_estoque;
         this.quantidade_max_estoque = quantidade_max_estoque;
-        this.categoria = categoria;
+        this.id_categoria = id_categoria;
+        this.nome_categoria = nome_categoria;
     }
 
     public int getIdProduto() {
@@ -91,17 +93,28 @@ public class Produto {
         this.quantidade_max_estoque = quantidadeMaxEstoque;
     }
 
-    public String getCategoria() {
-        return categoria;
+    public int getIdCategoria(){
+        return id_categoria;
+    }
+    
+    public void setIdCategoria(int idCategoria){
+        this.id_categoria = idCategoria;
+    }
+    
+    
+    public String getNomeCategoria() {
+        return nome_categoria;
     }
 
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
+    public void setNomeCategoria(String nome_categoria) {
+        this.nome_categoria = nome_categoria;
     }
     
     @Override
     public String toString(){
         return this.nome;
     }
+    
+ 
 }
 

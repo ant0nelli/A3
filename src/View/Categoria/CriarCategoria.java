@@ -3,7 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package View.Categoria;
-
+import Model.Categoria;
+import javax.swing.JOptionPane;
 import DAO.CategoriaDAO;
 import java.sql.Connection;
 
@@ -12,13 +13,14 @@ import java.sql.Connection;
  * @author arthu
  */
 public class CriarCategoria extends javax.swing.JFrame {
-
     /**
      * Creates new form CriarCategoria
      */
     public CriarCategoria() {
         initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        jComboBox1.setSelectedItem("Selecione");
+
 
     }
 
@@ -48,9 +50,9 @@ public class CriarCategoria extends javax.swing.JFrame {
 
         jLabel3.setText("Nome");
 
-        jLabel4.setText("tamanho");
+        jLabel4.setText("Tamanho");
 
-        jLabel5.setText("embalagem");
+        jLabel5.setText("Embalagem");
 
         jButton1.setText("Criar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -65,7 +67,7 @@ public class CriarCategoria extends javax.swing.JFrame {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequena", "Media", "Grande" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {"Selecione uma categoria", "Pequena", "Média", "Grande" }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -134,34 +136,58 @@ public class CriarCategoria extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String nome = jTextField2.getText();
-        String tamanho = jComboBox1.getSelectedItem().toString();
-        String embalagem = jTextField5.getText();
 
-        try { // usa sua classe com o método conectar()
-            // usa sua classe com o método conectar()
-            Connection conn = CategoriaDAO.conectar();
+         
+        Categoria categoriaNova = new Categoria();
 
-            if (conn != null) {
-                String sql = "INSERT INTO tb_categorias (nome, tamanho, embalagem) VALUES (?, ?, ?)";
-                java.sql.PreparedStatement stmt = conn.prepareStatement(sql);
-                stmt.setString(1, nome);
-                stmt.setString(2,tamanho);
-                stmt.setString(3, embalagem);
-;
-
-                stmt.executeUpdate();
-                javax.swing.JOptionPane.showMessageDialog(this, "Produto criado com sucesso!");
-                conn.close();
-            } else {
-                javax.swing.JOptionPane.showMessageDialog(this, "Erro na conexão com o banco de dados.");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            javax.swing.JOptionPane.showMessageDialog(this, "Erro ao salvar produto: " + e.getMessage());
+        //Verificação nome
+        String nomeCategoria = (String) jTextField2.getText();
+        if (nomeCategoria.trim().isEmpty()){
+            JOptionPane.showMessageDialog(null, "É necessário de um nome para criar a categoria", "Erro em relação ao nome", JOptionPane.WARNING_MESSAGE);
+            return;
         }
-        dispose();
+        categoriaNova.setNome(nomeCategoria);
         
+        //Verificação categoria
+        String tamanhoSelecionado = (String) jComboBox1.getSelectedItem();
+        if ( tamanhoSelecionado == null || tamanhoSelecionado.equals("Selecione uma categoria")){
+            JOptionPane.showMessageDialog(null, "Insira uma categoria para criar um produto","Erro com a categoria", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        categoriaNova.setTamanho(tamanhoSelecionado);
+        
+        
+        //Verificação embalagem
+        String nomeEmbalagem = (String) jTextField5.getText();
+        if(nomeEmbalagem.trim().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Coloque uma embalagem para criar uma categoria", "Erro com a embalagem", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        categoriaNova.setEmbalagem(nomeEmbalagem);
+
+
+
+
+        try {
+   
+            CategoriaDAO dao = new CategoriaDAO();
+            boolean sucesso = dao.insertCategoria(categoriaNova);
+
+            if (sucesso) {
+                JOptionPane.showMessageDialog(null, "Categoria criada com sucesso!");
+
+                
+                jTextField2.setText("");
+                jComboBox1.setSelectedItem("Selecione uma categoria");
+                jTextField5.setText("");
+            } else {
+                JOptionPane.showMessageDialog(null, "Erro ao inserir categoria.", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro inesperado ao criar a categoria: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace(); 
+        }
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed

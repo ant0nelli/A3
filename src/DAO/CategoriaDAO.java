@@ -82,6 +82,34 @@ public class CategoriaDAO{
     public void setListaCategorias(ArrayList<Categoria> ListaCategorias){
         this.ListaCategorias = ListaCategorias;
     }
+    
+    
+        //Ler por id
+    public Categoria getListaCategoriasPorId(int id_categoria)throws SQLException{
+        
+        Categoria encontrada = null;
+        
+        String sql = "SELECT id_categoria, nome, tamanho, embalagem FROM tb_categorias WHERE id_categoria = ?";
+        try(Connection conn = conectar();
+            PreparedStatement stmt = conn.prepareStatement(sql)){
+            stmt.setInt(1, id_categoria);
+            
+            try(ResultSet rs = stmt.executeQuery()){
+                if(rs.next()){
+                    int id = rs.getInt("id_categoria");
+                    String nome = rs.getString("nome");
+                    String tamanho = rs.getString("tamanho");
+                    String embalagem = rs.getString("embalagem");
+
+                    encontrada  = new Categoria (id, nome, tamanho, embalagem);
+                }
+                stmt.close();
+            }
+        }
+        return encontrada;
+    }
+
+    
 
     //Update
     public boolean updateCategoria(Categoria categoria){
@@ -94,9 +122,14 @@ public class CategoriaDAO{
             stmt.setString(3, categoria.getEmbalagem());
             stmt.setInt(4, categoria.getId());
 
-            stmt.execute();
+            int rowsAffected = stmt.executeUpdate(); 
             stmt.close();
-            return true;
+            return rowsAffected > 0;
+            
+            
+            
+            
+            
 
         } catch (SQLException e) {
             System.out.println("Erro:" + e);

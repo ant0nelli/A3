@@ -10,6 +10,7 @@ import View.Produto.ApagarProduto;
 import View.Categoria.CriarCategoria;
 import View.Categoria.ApagarCategoria;
 import View.Categoria.EditarCategoria;
+import DAO.ProdutoDAO;
 
 /**
  *
@@ -23,6 +24,7 @@ public class TelaInicial extends javax.swing.JFrame {
     public TelaInicial() {
         initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
 
         
     }
@@ -143,9 +145,14 @@ public class TelaInicial extends javax.swing.JFrame {
         jMenu5.add(jMenuItem7);
 
         jMenuItem8.setText("Produtos com a quantidade abaixo da mínima em estoque");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
         jMenu5.add(jMenuItem8);
 
-        jMenuItem9.setText("Produtos com a quantidade acima da mínima em estoque");
+        jMenuItem9.setText("Produtos com a quantidade acima da máxima em estoque");
         jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem9ActionPerformed(evt);
@@ -181,6 +188,8 @@ public class TelaInicial extends javax.swing.JFrame {
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
         // TODO add your handling code here:
+        ProdutoDAO dao = new ProdutoDAO();
+        dao.relatorioQntMax();
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
@@ -222,6 +231,12 @@ public class TelaInicial extends javax.swing.JFrame {
         telaApagarCategoria.setVisible(true);
     }//GEN-LAST:event_jMenuItem11ActionPerformed
 
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        // TODO add your handling code here:
+        ProdutoDAO dao = new ProdutoDAO();
+        dao.relatorioQntMinima();
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -252,7 +267,10 @@ public class TelaInicial extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaInicial().setVisible(true);
+                TelaInicial tela = new TelaInicial();
+                //new TelaInicial().setVisible(true);
+                tela.setLocationRelativeTo(null); 
+                tela.setVisible(true);
             }
         });
     }

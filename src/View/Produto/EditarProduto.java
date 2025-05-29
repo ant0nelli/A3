@@ -9,7 +9,7 @@ import DAO.CategoriaDAO;
 import Model.Categoria;
 import java.awt.HeadlessException;
 import java.sql.SQLException;
-
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
 import java.util.List;
 
@@ -27,7 +27,7 @@ public class EditarProduto extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         atualizarComboBox();
         listarCategoriaComboBox();
-        //produtoComboBox.setSelectedItem(0);
+        mostrarTabela();
         
 
 
@@ -313,20 +313,48 @@ public class EditarProduto extends javax.swing.JFrame {
     }
     
     //Método visualizar na tabela
-    /**
     private void mostrarTabela(){
-        try{
-            ProdutoDAO mostrarTabela = new ProdutoDAO();
-            List<Produto> produtos = mostrarTabela.buscarPorId();
-            produtoComboBox.removeAllItems();
-            for (Produto p : produtos){
-                produtoComboBox.addItem(p.getNome());
+        DefaultTableModel  modelo = new DefaultTableModel(){
+            @Override
+            public boolean isCellEditable(int row, int column){
+                return false;
             }
+        };
+        
+        
+        modelo.addColumn("ID");
+        modelo.addColumn("Nome");
+        modelo.addColumn("Preço");
+        modelo.addColumn("Unidade");
+        modelo.addColumn("Qtd. Estoque");
+        modelo.addColumn("Qtd. Min");
+        modelo.addColumn("Qtd. Max");
+        modelo.addColumn("Categoria");
+        
+        try{
+            ProdutoDAO dao = new ProdutoDAO();
+            List<Produto> produtos = dao.listarTodos();
+            
+            for (Produto p : produtos){
+                modelo.addRow(new Object []{
+                    p.getIdProduto(),
+                    p.getNome(),
+                    p.getPreco(),
+                    p.getUnidade(),
+                    p.getQuantidadeEstoque(),
+                    p.getQuantidadeMinEstoque(),
+                    p.getQuantidadeMaxEstoque(),
+                    p.getNomeCategoria()
+            });
+        }
+            TableEditarProduto.setModel(modelo);
+            TableEditarProduto.getTableHeader().setReorderingAllowed(false);
+            
         }catch (Exception ex){
             JOptionPane.showMessageDialog(null, "Erro: "+ex.getMessage());
         }
     }
-    **/
+   
     
     //Método listar categorias para o combobox
     private void listarCategoriaComboBox(){
@@ -336,9 +364,16 @@ public class EditarProduto extends javax.swing.JFrame {
             
             categoriaComboBox.removeAllItems();
             
+            Categoria categoriaPlaceHolder = new Categoria(0, "Selecione categoria", "", "" );
+            categoriaComboBox.addItem(categoriaPlaceHolder);
+            
+            
+            
             for (Categoria c: categorias){
                 categoriaComboBox.addItem(c);
             }  
+            
+            categoriaComboBox.setSelectedItem(categoriaPlaceHolder);
     }
     
     
@@ -347,94 +382,108 @@ public class EditarProduto extends javax.swing.JFrame {
     //Botão salvar alterações
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
-            Produto editarProduto = new Produto();
-            
-            //Categoria ComboBox
+            Produto selecionadoNoComboBox = (Produto) produtoComboBox.getSelectedItem();
+
+            //verificar se o ComboBox do produto tá vazio
+            if (selecionadoNoComboBox == null || selecionadoNoComboBox.getIdProduto() == 0) {
+                JOptionPane.showMessageDialog(null, "Por favor, selecione um produto válido para atualizar.", "Erro", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+
+            Produto produtoParaAtualizar = new Produto();
+            produtoParaAtualizar.setIdProduto(selecionadoNoComboBox.getIdProduto()); 
+
             Categoria categoriaSelecionada = (Categoria) categoriaComboBox.getSelectedItem();
-            if (categoriaSelecionada != null){
-                editarProduto.setCategoria(categoriaSelecionada.getNome());
+
+            if (categoriaSelecionada == null || categoriaSelecionada.getId() == 0) {
+                JOptionPane.showMessageDialog(null, "Por favor, selecione uma categoria válida para o produto.", "Erro de Validação", JOptionPane.WARNING_MESSAGE);
+                return;
             }
             
-            
-            
-            Produto selecionado = (Produto) produtoComboBox.getSelectedItem();
-            ProdutoDAO dao = new ProdutoDAO();
-            
-            boolean aplicouReajuste = false;
-            
-            double precoOriginalBanco = selecionado.getPreco(); 
-            double precoDigitado = Double.parseDouble(ep_preco.getText()); 
-            
+            produtoParaAtualizar.setIdCategoria(categoriaSelecionada.getId());
+            produtoParaAtualizar.setNomeCategoria(categoriaSelecionada.getNome()); 
 
-            //Reajuste percentual
-            if (!ep_reajuste_percentual.getText().trim().isEmpty()) { 
+            produtoParaAtualizar.setNome(ep_nome.getText());
+            produtoParaAtualizar.setUnidade(ep_unidade.getText());
+
+            double precoDigitado;
+            double precoFinal;
+            boolean reajusteFoiInformado = false;
+
+            try {
+                precoDigitado = Double.parseDouble(ep_preco.getText());
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Por favor, insira um valor numérico válido para o Preço.", "Erro de Formato", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            double percentualReajuste = 0.0;
+            if (!ep_reajuste_percentual.getText().trim().isEmpty()) {
                 try {
-                    double percentual = Double.parseDouble(ep_reajuste_percentual.getText());
-                    
-                    
+                    percentualReajuste = Double.parseDouble(ep_reajuste_percentual.getText());
                     if (reajusteComboBox.getSelectedItem().toString().equals("-")) {
-                        percentual *= -1;
+                        percentualReajuste *= -1;
                     }
-                                        
-                    boolean reajusteFeito = dao.reajustarPrecoProduto(selecionado, percentual);
-                    
-                    if (reajusteFeito) {
-                        aplicouReajuste = true;
-                        double novoPreco = precoDigitado * (1 + percentual / 100);
-                        
-                        ep_preco.setText(String.valueOf(novoPreco));
-                        editarProduto.setPreco(novoPreco);
-                        System.out.println("Novo preço calculado: " + novoPreco);
-                        
-                        if (precoDigitado != precoOriginalBanco){
-                            JOptionPane.showMessageDialog(null, String.format("Você alterou o preço manualmente e aplicou um reajuste de %.2f%%.\n\n" + "Preço digitado: R$ %.2f \n" + "Novo preço com reajuste: %.2f", percentual, precoDigitado, novoPreco));
-                        }
-                        
-                    } else {
-                        System.out.println("Reajuste falhou.");
-                    }
-                }catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(null, "Valor de reajuste inválido.");
+                    reajusteFoiInformado = true;
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Valor de reajuste percentual inválido.", "Erro de Reajuste", JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
-            }if (!aplicouReajuste){
-                editarProduto.setPreco(precoDigitado);
             }
-            
-            
-            
-            editarProduto.setNome(ep_nome.getText());
-            editarProduto.setPreco(Double.parseDouble(ep_preco.getText()));
-            editarProduto.setUnidade(ep_unidade.getText());
-            editarProduto.setQuantidadeEstoque(Integer.parseInt(ep_qnt_estoque.getText()));
-            editarProduto.setQuantidadeMinEstoque(Integer.parseInt(ep_qnt_min_estoque.getText()));
-            editarProduto.setQuantidadeMaxEstoque(Integer.parseInt(ep_qnt_max_estoque.getText()));
-            editarProduto.setIdProduto(selecionado.getIdProduto()); //w
-            //editarProduto.setCategoria(categoriaComboBox.getSelectedItem());
 
-            boolean sucesso = dao.atualizar(editarProduto);
-            if (sucesso){
+            double precoBaseParaCalculo = precoDigitado;
+
+            if (reajusteFoiInformado) {
+                precoFinal = precoBaseParaCalculo * (1 + percentualReajuste / 100);
+                JOptionPane.showMessageDialog(null, String.format("Reajuste de %.2f%% aplicado. Novo preço final: R$ %.2f", percentualReajuste, precoFinal));
+            } else {
+                precoFinal = precoDigitado;
+            }
+
+            produtoParaAtualizar.setPreco(precoFinal);
+            
+            //Verificar qnt max e min
+            if (Integer.parseInt(ep_qnt_min_estoque.getText()) <= Integer.parseInt(ep_qnt_max_estoque.getText())){
+                try {
+                    produtoParaAtualizar.setQuantidadeEstoque(Integer.parseInt(ep_qnt_estoque.getText()));
+                    produtoParaAtualizar.setQuantidadeMinEstoque(Integer.parseInt(ep_qnt_min_estoque.getText()));
+                    produtoParaAtualizar.setQuantidadeMaxEstoque(Integer.parseInt(ep_qnt_max_estoque.getText()));
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Por favor, insira valores numéricos válidos para Quantidade em Estoque, Mínima e Máxima.", "Erro de Formato", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }else{
+                JOptionPane.showMessageDialog(null, "A quantidade mínima no estoque não pode ser maior que a quantidade máxima no estoque", "Erro com quantidades máxima e mínima", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+    
+
+            ProdutoDAO dao = new ProdutoDAO();
+            boolean sucesso = dao.atualizar(produtoParaAtualizar); 
+
+            if (sucesso) {
                 JOptionPane.showMessageDialog(null, "Produto atualizado com sucesso!");
-                atualizarComboBox();
-                //Limpar os campos
+                atualizarComboBox(); 
+                // Limpar os campos após o sucesso
                 ep_nome.setText("");
                 ep_preco.setText("");
                 ep_unidade.setText("");
                 ep_qnt_estoque.setText("");
                 ep_qnt_min_estoque.setText("");
                 ep_qnt_max_estoque.setText("");
-                produtoComboBox.setSelectedItem(0);
+                produtoComboBox.setSelectedItem(new Produto()); 
                 ep_reajuste_percentual.setText("");
-                reajusteComboBox.setSelectedItem(0);
-
-            }else{
-                JOptionPane.showMessageDialog(null, "Erro ao atualizar o produto!");
-            }        
-        } catch (NumberFormatException ex){
-            JOptionPane.showMessageDialog(null, "Erro com os valores númericos.");
-
-        } catch (HeadlessException ex){
-            JOptionPane.showMessageDialog(null, "Erro:" + ex.getMessage());
+                reajusteComboBox.setSelectedItem("+");
+                categoriaComboBox.setSelectedItem(null);
+                mostrarTabela();
+            } else {
+                JOptionPane.showMessageDialog(null, "Erro ao atualizar o produto!", "Erro de Atualização", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (HeadlessException ex) {
+            JOptionPane.showMessageDialog(null, "Erro inesperado: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
+    
            
  
         
@@ -451,8 +500,9 @@ public class EditarProduto extends javax.swing.JFrame {
         try {
             Produto produtoSelecionado = (Produto) produtoComboBox.getSelectedItem();
             ProdutoDAO dao = new ProdutoDAO();
-
+  
             Produto produtoCompleto = dao.buscarPorId(produtoSelecionado.getIdProduto());
+
             
             if (produtoSelecionado.getIdProduto() == 0) {
                 JOptionPane.showMessageDialog(null, "Por favor, selecione um produto válido.");
@@ -466,13 +516,13 @@ public class EditarProduto extends javax.swing.JFrame {
                 ep_qnt_estoque.setText(String.valueOf(produtoCompleto.getQuantidadeEstoque()));
                 ep_qnt_min_estoque.setText(String.valueOf(produtoCompleto.getQuantidadeMinEstoque()));
                 ep_qnt_max_estoque.setText(String.valueOf(produtoCompleto.getQuantidadeMaxEstoque()));
-                categoriaComboBox.setSelectedItem(produtoCompleto.getCategoria());
+                categoriaComboBox.setSelectedItem(produtoCompleto.getNomeCategoria());
                 
                 
-                String nomeCategoriaProduto = produtoCompleto.getCategoria();
+                String nomeCategoriaProduto = produtoCompleto.getNomeCategoria();
                 for (int i=0; i< categoriaComboBox.getItemCount(); i++){
                     Categoria cat = categoriaComboBox.getItemAt(i);
-                    if (cat.getNome().equals(nomeCategoriaProduto)){
+                    if (cat != null && cat.getNome() != null && cat.getNome().equals(nomeCategoriaProduto)){
                         categoriaComboBox.setSelectedIndex(i);
                         break;
                     }
@@ -484,7 +534,6 @@ public class EditarProduto extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Produto não encontrado.");
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
             JOptionPane.showMessageDialog(null, "Erro ao buscar produto: " + ex.getMessage());
         }
 
@@ -535,9 +584,9 @@ public class EditarProduto extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new EditarProduto().setVisible(true);
+        java.awt.EventQueue.invokeLater(new Runnable(){
+            public void run(){
+                 new EditarProduto().setVisible(true);
             }
         });
     }
