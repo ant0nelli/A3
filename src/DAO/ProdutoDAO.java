@@ -194,7 +194,7 @@ public class MensagemCheck {
 
             for (Produto p : produtos) {
                 if (p.getQuantidadeEstoque() < p.getQuantidadeMinEstoque()) {
-                    mensagem += String.format("Nome: %s \n Estoque atual: %d \n Estoque mínimo: %d", p.getNome(), p.getQuantidadeEstoque(), p.getQuantidadeMinEstoque());
+                    mensagem += String.format("Nome: %s \n Estoque atual: %d \n Estoque mínimo: %d\n\n", p.getNome(), p.getQuantidadeEstoque(), p.getQuantidadeMinEstoque());
                     encontrouProdutoAbaixo = true;
                 }
             }
