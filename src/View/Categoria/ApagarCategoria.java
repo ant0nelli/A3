@@ -4,6 +4,15 @@
  */
 package View.Categoria;
 
+import DAO.CategoriaDAO;
+import java.util.List;
+import Model.Categoria;
+import javax.swing.JOptionPane;
+
+import java.sql.SQLException;
+import java.awt.HeadlessException;
+import java.util.List;
+
 /**
  *
  * @author arthu
@@ -16,6 +25,7 @@ public class ApagarCategoria extends javax.swing.JFrame {
     public ApagarCategoria() {
         initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        atualizarComboBox();
 
     }
 
@@ -31,85 +41,56 @@ public class ApagarCategoria extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        btnApagarCategoria = new javax.swing.JButton();
+        comboBoxCategoria = new javax.swing.JComboBox<Categoria>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
-        jLabel1.setText("Apagar produto");
+        jLabel1.setText("Apagar categoria");
 
-        jLabel3.setText("Nome do categoria");
+        jLabel3.setText("Categoria para ser excluida");
 
-        jButton1.setText("Apagar produto");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnApagarCategoria.setText("Apagar categoria");
+        btnApagarCategoria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnApagarCategoriaActionPerformed(evt);
             }
         });
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        jLabel2.setText("Confirmação para exclusão");
-
-        jLabel4.setText("(digite o nome da categoria)");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(195, 195, 195)
+                .addComponent(jLabel1)
+                .addContainerGap(172, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(258, 258, 258)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(252, 252, 252)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jButton1)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(9, 9, 9)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(224, 224, 224)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(jLabel4))
-                            .addComponent(jLabel2))))
-                .addContainerGap(287, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(166, 166, 166))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(comboBoxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(151, 151, 151))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnApagarCategoria)
+                        .addGap(184, 184, 184))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
+                .addGap(25, 25, 25)
                 .addComponent(jLabel1)
-                .addGap(44, 44, 44)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
+                .addComponent(comboBoxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37)
-                .addComponent(jButton1)
-                .addGap(41, 41, 41))
+                .addComponent(btnApagarCategoria)
+                .addContainerGap(180, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -118,7 +99,7 @@ public class ApagarCategoria extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 32, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -128,13 +109,61 @@ public class ApagarCategoria extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    //Atualizar ComboBox Categorias
+    private void atualizarComboBox(){
+        CategoriaDAO dao = new CategoriaDAO();
+        List<Categoria> categorias = dao.getListaCategorias();
+        comboBoxCategoria.removeAllItems();
+        Categoria placeholder = new Categoria();
+        placeholder.setId(0);
+        placeholder.setNome("Selecione uma categoria");
+        comboBoxCategoria.addItem(placeholder);
+        for(Categoria c: categorias){
+            comboBoxCategoria.addItem(c);
+        }
+    }
+    
+    
+    
+    //APAGAR categoria
+    private void btnApagarCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApagarCategoriaActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+        Categoria categoriaSelecionada = (Categoria) comboBoxCategoria.getSelectedItem();
+
+        if( categoriaSelecionada == null || categoriaSelecionada.getId() == 0){
+            JOptionPane.showMessageDialog(null, "Por favor, selecione uma categoria válida para o produto.", "Erro de Validação", JOptionPane.WARNING_MESSAGE);
+            return;
+        } 
+
+        CategoriaDAO apagar = new CategoriaDAO();
+
+        try{
+            if (apagar.existemProdutosNaCategoria(categoriaSelecionada.getId())){
+                JOptionPane.showMessageDialog(null, "Essa categoria não pode ser apagada pois existem produtos relacionados a ela. Troque a categoria desses produtos antes de continuar", "Erro ao apagar", JOptionPane.ERROR_MESSAGE);
+
+            }else{
+                int confirmacao = JOptionPane.showConfirmDialog(this, 
+                "Tem certeza que deseja apagar a categoria '" + categoriaSelecionada.getNome() + "'?", 
+                "Confirmar Exclusão", 
+                JOptionPane.YES_NO_OPTION);
+
+                if (confirmacao == JOptionPane.YES_OPTION){
+                    boolean sucesso = apagar.deleteCategoria(categoriaSelecionada);
+                    if (sucesso){
+                        JOptionPane.showMessageDialog(this, "Categoria apagada com sucesso!");
+                        atualizarComboBox();   
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Erro ao apagar a categoria.", "Erro", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, "Erro:" + e.getMessage());
+            e.printStackTrace();
+    }
+            
+            
+    }//GEN-LAST:event_btnApagarCategoriaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -172,13 +201,10 @@ public class ApagarCategoria extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JButton btnApagarCategoria;
+    private javax.swing.JComboBox<Categoria> comboBoxCategoria;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }

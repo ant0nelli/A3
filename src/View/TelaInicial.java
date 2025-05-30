@@ -198,36 +198,42 @@ public class TelaInicial extends javax.swing.JFrame {
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         CriarProduto telaCriarProduto = new CriarProduto();
+        telaCriarProduto.setLocationRelativeTo(null); 
         telaCriarProduto.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // TODO add your handling code here:
         EditarProduto telaEditarProduto = new EditarProduto();
+        telaEditarProduto.setLocationRelativeTo(null); 
         telaEditarProduto.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
         // TODO add your handling code here:
         ApagarProduto telaApagarProduto = new ApagarProduto();
+        telaApagarProduto.setLocationRelativeTo(null); 
         telaApagarProduto.setVisible(true);
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         // TODO add your handling code here:
         CriarCategoria telaCriarCategoria = new CriarCategoria();
+        telaCriarCategoria.setLocationRelativeTo(null); 
         telaCriarCategoria.setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         // TODO add your handling code here:
         EditarCategoria telaEditarCategoria = new EditarCategoria();
+        telaEditarCategoria.setLocationRelativeTo(null); 
         telaEditarCategoria.setVisible(true);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
         // TODO add your handling code here:
         ApagarCategoria telaApagarCategoria = new ApagarCategoria();
+        telaApagarCategoria.setLocationRelativeTo(null); 
         telaApagarCategoria.setVisible(true);
     }//GEN-LAST:event_jMenuItem11ActionPerformed
 

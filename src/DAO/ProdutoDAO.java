@@ -1,12 +1,14 @@
 package DAO;
 
 import Model.Produto;
+import java.awt.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
+import javax.swing.*;
+
 
 public class ProdutoDAO {
 
@@ -51,12 +53,20 @@ public class ProdutoDAO {
         }
     }
     //Deletar
-    public void deletar(int id_produto) throws SQLException {
-        String sql = "DELETE FROM produtos WHERE id_produto = ?";
+    public boolean deletar(int id_produto){
+        String sql = "DELETE FROM tb_produtos WHERE id_produto = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            
             stmt.setInt(1, id_produto);
-            stmt.executeUpdate();
+            int linhasAfetadas = stmt.executeUpdate();
+            return linhasAfetadas > 0;
+           
+        }catch(SQLException e){
+            System.out.println("Erro ao deletar produto com ID " + id_produto + ": " + e.getMessage());
+            e.printStackTrace(); 
+            return false; 
         }
+        
     }
     //Buscar por id
     public Produto buscarPorId(int id_produto) throws SQLException {
@@ -82,7 +92,8 @@ public class ProdutoDAO {
         String sql = "SELECT p.*, c.nome AS nome_categoria "
                 + "FROM tb_produtos p "
                 + "JOIN tb_categorias c ON p.id_categoria = c.id_categoria";
-        try (PreparedStatement stmt = connection.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+        try (PreparedStatement stmt = connection.prepareStatement(sql); 
+        ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 produtos.add(mapearProduto(rs));
             }
@@ -150,6 +161,28 @@ public class ProdutoDAO {
 
 
 
+public class MensagemCheck {
+    public static void mostrar(String mensagem) {
+        // Carrega e redimensiona o ícone
+        ImageIcon originalIcon = new ImageIcon(MensagemCheck.class.getResource("check.png"));
+        Image imagemReduzida = originalIcon.getImage().getScaledInstance(48, 48, Image.SCALE_SMOOTH);
+        Icon checkIcon = new ImageIcon(imagemReduzida);
+
+        JOptionPane.showMessageDialog(
+            null,
+            mensagem,
+            "Sucesso",
+            JOptionPane.PLAIN_MESSAGE,
+            checkIcon
+        );
+    }
+}
+
+
+
+    
+    
+
     //Relatorio com produtos que estão abaixo da quantidade mínima
     public boolean relatorioQntMinima() {
         ProdutoDAO listarprodutos = new ProdutoDAO();
@@ -169,7 +202,8 @@ public class ProdutoDAO {
             if (encontrouProdutoAbaixo) {
                 JOptionPane.showMessageDialog(null, "Os seguintes produtos estão com estoque abaixo do mínimo:\n\n" + mensagem);
             } else {
-                JOptionPane.showMessageDialog(null, "Todos os produtos estão com estoque acima do mínimo.");
+                //JOptionPane.showMessageDialog(null, "Todos os produtos estão com estoque acima do mínimo.");
+                MensagemCheck.mostrar("Todos os produtos estão com o estoque acima do mínimo");
             }
 
             return encontrouProdutoAbaixo;
@@ -197,7 +231,8 @@ public class ProdutoDAO {
             if (encontrouProdutoAcima) {
                 JOptionPane.showMessageDialog(null, "Os seguintes produtos estão com o estoque acima do máximo" + mensagem);
             } else {
-                JOptionPane.showMessageDialog(null, "Tudo ótimo, nenhum produto em excesso no estoque");
+                //JOptionPane.showMessageDialog(null, "Tudo ótimo, nenhum produto em excesso no estoque");
+                MensagemCheck.mostrar("Tudo ótimo, nenhum produto em excesso no estoque");
             }
 
             return encontrouProdutoAcima;

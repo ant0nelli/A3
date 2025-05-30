@@ -125,11 +125,6 @@ public class CategoriaDAO{
             int rowsAffected = stmt.executeUpdate(); 
             stmt.close();
             return rowsAffected > 0;
-            
-            
-            
-            
-            
 
         } catch (SQLException e) {
             System.out.println("Erro:" + e);
@@ -151,6 +146,27 @@ public class CategoriaDAO{
                 System.out.println("Erro" + e);
                 throw new RuntimeException(e);
             }
+    }
+    
+    
+    //Existem produtos na categoria (feito para poder apagar as cateogiras)
+    public boolean existemProdutosNaCategoria(int idCategoria){
+        String sql = "SELECT COUNT(*) FROM tb_produtos WHERE id_categoria = ?";
+        try(Connection conn = conectar();
+            PreparedStatement stmt = conn.prepareStatement(sql)){
+            
+            stmt.setInt(1, idCategoria);
+            try (ResultSet rs = stmt.executeQuery()){
+               if(rs.next()){
+                   return rs.getInt(1) > 0;
+               }
+            }
+            
+        }catch (SQLException ex){
+            System.out.println("Erro ao verificar produtos na categoria" + ex.getMessage());
+            ex.printStackTrace();
+        }
+        return false;
     }
 
 }

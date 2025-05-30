@@ -4,6 +4,14 @@
  */
 package View.Produto;
 
+import DAO.ProdutoDAO;
+import Model.Produto;
+import java.awt.HeadlessException;
+import java.util.List;
+
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author arthu
@@ -16,6 +24,28 @@ public class ApagarProduto extends javax.swing.JFrame {
     public ApagarProduto() {
         initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        atualizarComboBox();
+
+    }
+
+    //Atualizar combo box
+    public void atualizarComboBox() {
+        try {
+            ProdutoDAO dao = new ProdutoDAO();
+            List<Produto> produtos = dao.listarTodos();
+            produtoComboBox.removeAllItems();
+
+            Produto placeholder = new Produto();
+            placeholder.setIdProduto(0);
+            placeholder.setNome("Selecione um produto");
+            produtoComboBox.addItem(placeholder);
+            for (Produto p : produtos) {
+                produtoComboBox.addItem(p);
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao atualizar combobox", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
 
     }
 
@@ -32,10 +62,7 @@ public class ApagarProduto extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        produtoComboBox = new javax.swing.JComboBox<Produto>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -51,19 +78,6 @@ public class ApagarProduto extends javax.swing.JFrame {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        jLabel2.setText("Confirmação para exclusão");
-
-        jLabel4.setText("(digite o nome do produto)");
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -71,26 +85,19 @@ public class ApagarProduto extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(258, 258, 258)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(252, 252, 252)
+                        .addComponent(jLabel1))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(258, 258, 258)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
                             .addComponent(jButton1)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(9, 9, 9)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(4, 4, 4)
+                                .addComponent(jLabel3))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(224, 224, 224)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(jLabel4))
-                            .addComponent(jLabel2))))
-                .addContainerGap(287, Short.MAX_VALUE))
+                        .addGap(218, 218, 218)
+                        .addComponent(produtoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(248, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -100,16 +107,10 @@ public class ApagarProduto extends javax.swing.JFrame {
                 .addGap(44, 44, 44)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
-                .addGap(18, 18, 18)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37)
+                .addComponent(produtoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(51, 51, 51)
                 .addComponent(jButton1)
-                .addGap(41, 41, 41))
+                .addContainerGap(151, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -129,12 +130,33 @@ public class ApagarProduto extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+        Produto produtoApagar = (Produto) produtoComboBox.getSelectedItem();
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+        if (produtoApagar == null || produtoApagar.getIdProduto() == 0) {
+            JOptionPane.showMessageDialog(null, "Erro. Selecione um produto para apagar", "Erro ao selecionar produto", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        int confirmacao = JOptionPane.showConfirmDialog(this,
+                "Tem certeza que deseja apagar o prouto" + produtoApagar.getNome() + "'?",
+                "Confirmar Exclusão",
+                JOptionPane.YES_NO_OPTION);
+
+        if (confirmacao == JOptionPane.YES_OPTION) {
+            ProdutoDAO dao = new ProdutoDAO();
+            try {
+                boolean sucesso = dao.deletar(produtoApagar.getIdProduto());
+                if (sucesso) {
+                    JOptionPane.showMessageDialog(null, "Produto apagado com sucesso!");
+                    atualizarComboBox();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Erro ao apagar produto");
+                }
+            } catch (HeadlessException e) {
+                JOptionPane.showMessageDialog(null, "Erro" + e.getMessage());
+            }
+
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -173,12 +195,9 @@ public class ApagarProduto extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JComboBox<Produto> produtoComboBox;
     // End of variables declaration//GEN-END:variables
 }

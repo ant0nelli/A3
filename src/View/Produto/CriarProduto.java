@@ -28,7 +28,6 @@ public class CriarProduto extends javax.swing.JFrame {
     public CriarProduto() {
         initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        
 
         ListarCategoriaComboBox();
 
@@ -76,12 +75,12 @@ public class CriarProduto extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
+        textPreco = new javax.swing.JTextField();
+        textNome = new javax.swing.JTextField();
+        textQntEstoque = new javax.swing.JTextField();
+        textQntMax = new javax.swing.JTextField();
+        textUnidade = new javax.swing.JTextField();
+        textQntMin = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         categoriaComboBox = new javax.swing.JComboBox<Model.Categoria>();
 
@@ -109,9 +108,9 @@ public class CriarProduto extends javax.swing.JFrame {
             }
         });
 
-        jTextField5.addActionListener(new java.awt.event.ActionListener() {
+        textUnidade.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField5ActionPerformed(evt);
+                textUnidadeActionPerformed(evt);
             }
         });
 
@@ -129,23 +128,23 @@ public class CriarProduto extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(textQntMax, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addGap(18, 18, 18)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 481, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(textPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 481, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(textQntMin, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 481, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(textUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, 481, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel6)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(textQntEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel8)
                                 .addGap(92, 92, 92)
@@ -163,7 +162,7 @@ public class CriarProduto extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                     .addContainerGap(80, Short.MAX_VALUE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 481, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textNome, javax.swing.GroupLayout.PREFERRED_SIZE, 481, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(64, 64, 64)))
         );
         jPanel1Layout.setVerticalGroup(
@@ -176,23 +175,23 @@ public class CriarProduto extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(textPreco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(textUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(textQntEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(34, 34, 34)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(textQntMax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(22, 22, 22)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(textQntMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
@@ -203,7 +202,7 @@ public class CriarProduto extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(69, 69, 69)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(331, Short.MAX_VALUE)))
         );
 
@@ -228,77 +227,92 @@ public class CriarProduto extends javax.swing.JFrame {
        try {
             Produto produtoNovo = new Produto();
 
-            // 1. Obter a categoria selecionada do ComboBox
+
             Categoria categoriaSelecionada = (Categoria) categoriaComboBox.getSelectedItem();
 
-            // Validação da categoria: Garante que uma categoria válida (não o placeholder) foi selecionada
+
             if (categoriaSelecionada == null || categoriaSelecionada.getId() == 0) {
                 JOptionPane.showMessageDialog(null, "Por favor, selecione uma categoria válida para o produto.", "Erro de Validação", JOptionPane.WARNING_MESSAGE);
                 return; // Para a execução se a categoria for inválida
             }
-            // Atribui o ID da categoria selecionada ao novo produto
-            produtoNovo.setIdCategoria(categoriaSelecionada.getId()); 
-            produtoNovo.setNomeCategoria(categoriaSelecionada.getNome()); // Opcional, para manter o objeto completo
 
-            // 2. Obter os dados dos campos de texto
-            produtoNovo.setNome(jTextField2.getText());
-            // Validar e parsear Preço
+            produtoNovo.setIdCategoria(categoriaSelecionada.getId()); 
+            produtoNovo.setNomeCategoria(categoriaSelecionada.getNome());
+
+            if (textNome.getText().trim().isEmpty()){
+                JOptionPane.showMessageDialog(null, "Insira um nome para criar um produto", "Erro nome do produto", JOptionPane.ERROR_MESSAGE);
+                return;
+            }else{
+                produtoNovo.setNome(textNome.getText());
+            }
+            
+
             try {
-                produtoNovo.setPreco(Double.parseDouble(jTextField1.getText()));
+                produtoNovo.setPreco(Double.parseDouble(textPreco.getText()));
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(null, "Por favor, insira um valor numérico válido para o Preço.", "Erro de Formato", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            produtoNovo.setUnidade(jTextField5.getText());
-            // Validar e parsear Quantidades
-            try {
-                produtoNovo.setQuantidadeEstoque(Integer.parseInt(jTextField3.getText()));
-                produtoNovo.setQuantidadeMinEstoque(Integer.parseInt(jTextField4.getText()));
-                produtoNovo.setQuantidadeMaxEstoque(Integer.parseInt(jTextField6.getText()));
-            } catch (NumberFormatException e) {
+            
+            
+            String unidade = textUnidade.getText().trim();
+            
+            if (unidade.isEmpty()){
+                JOptionPane.showMessageDialog(null, "Insira uma unidade para criar um produto", "Erro unidade do produto", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            if(unidade.matches("\\d+")){
+                JOptionPane.showMessageDialog(null, "A unidade não pode ser apenas números", "Erro", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            produtoNovo.setUnidade(textUnidade.getText());
+            
+            
+           
+            String qntMinStr = textQntMin.getText().trim();
+            String qntMaxStr = textQntMax.getText().trim();
+            
+            try{
+                int qntMin = Integer.parseInt(qntMinStr);
+                int qntMax = Integer.parseInt(qntMaxStr);
+                if (qntMin > qntMax){
+                    JOptionPane.showMessageDialog(null, "A quantidade mínima em estoque deve ser menor que a quantidade máxima em estoque");
+                    return;
+                }
+                
+                produtoNovo.setQuantidadeEstoque(Integer.parseInt(textQntEstoque.getText()));
+                produtoNovo.setQuantidadeMinEstoque(Integer.parseInt(textQntMin.getText()));
+                produtoNovo.setQuantidadeMaxEstoque(Integer.parseInt(textQntMax.getText()));
+                
+                
+            }catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(null, "Por favor, insira valores numéricos válidos para Quantidade em Estoque, Mínima e Máxima.", "Erro de Formato", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             
-            // Remova esta linha, pois 'nomeCategoria' agora vem do ComboBox
-            // produtoNovo.setNomeCategoria(jTextField7.getText()); 
-            // Se jTextField7 era para o ID, ele deve ser removido ou transformado em label.
-            // Se jTextField7 era para o nome da categoria digitado, ele será substituído pelo ComboBox.
 
-            // --- PONTOS DE DEPURACÃO ANTES DO DAO ---
-            System.out.println("\n--- Produto a ser criado (dados FINAIS) ---");
-            System.out.println("  Nome: " + produtoNovo.getNome());
-            System.out.println("  Preço: " + produtoNovo.getPreco());
-            System.out.println("  Unidade: " + produtoNovo.getUnidade());
-            System.out.println("  Quantidade Estoque: " + produtoNovo.getQuantidadeEstoque());
-            System.out.println("  Quantidade Mínima: " + produtoNovo.getQuantidadeMinEstoque());
-            System.out.println("  Quantidade Máxima: " + produtoNovo.getQuantidadeMaxEstoque());
-            System.out.println("  ID Categoria a ser enviado para o DAO: " + produtoNovo.getIdCategoria());
-            System.out.println("  Nome Categoria (para UI): " + produtoNovo.getNomeCategoria());
-            System.out.println("----------------------------------------------\n");
-
-            // 3. Chamar o DAO para inserir o produto
             ProdutoDAO dao = new ProdutoDAO();
             boolean sucesso = dao.insertProduto(produtoNovo);
 
             if(sucesso){
                 JOptionPane.showMessageDialog(null, "Produto inserido com sucesso!");
                
-                jTextField1.setText(""); // Preço
-                jTextField2.setText(""); // Nome
-                jTextField3.setText(""); // Quantidade Estoque
-                jTextField4.setText(""); // Quantidade Mínima Estoque
-                jTextField5.setText(""); // Unidade
-                jTextField6.setText(""); // Quantidade Máxima Estoque
-                categoriaComboBox.setSelectedItem(placeholderCategoria); // Volta para o placeholder da categoria
+                textPreco.setText(""); 
+                textNome.setText(""); 
+                textQntEstoque.setText(""); 
+                textQntMax.setText("");
+                textUnidade.setText("");
+                textQntMin.setText(""); 
+                categoriaComboBox.setSelectedItem(placeholderCategoria); 
 
             } else {
                 JOptionPane.showMessageDialog(null, "Erro ao criar seu produto.", "Erro de Inserção", JOptionPane.ERROR_MESSAGE);
             }
 
-        } catch (HeadlessException ex) { // Captura exceções específicas
+        } catch (HeadlessException ex) { 
             JOptionPane.showMessageDialog(null, "Erro inesperado: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-        } catch (Exception ex) { // Captura qualquer outra exceção não tratada
+        } catch (Exception ex) { 
             JOptionPane.showMessageDialog(null, "Ocorreu um erro ao criar o produto: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     
@@ -308,9 +322,9 @@ public class CriarProduto extends javax.swing.JFrame {
 
 //GEN-LAST:event_jButton1ActionPerformed
 
-    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
+    private void textUnidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textUnidadeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField5ActionPerformed
+    }//GEN-LAST:event_textUnidadeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -339,6 +353,7 @@ public class CriarProduto extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 CriarProduto tela = new CriarProduto();
+                tela.setLocationRelativeTo(null); 
                 tela.setVisible(true);
             }
         });
@@ -356,11 +371,11 @@ public class CriarProduto extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField textNome;
+    private javax.swing.JTextField textPreco;
+    private javax.swing.JTextField textQntEstoque;
+    private javax.swing.JTextField textQntMax;
+    private javax.swing.JTextField textQntMin;
+    private javax.swing.JTextField textUnidade;
     // End of variables declaration//GEN-END:variables
 }

@@ -259,11 +259,46 @@ public class EditarCategoria extends javax.swing.JFrame {
                 return;
             }
             Categoria categoriaAtualizada = new Categoria();
-            categoriaAtualizada.setId(categoriaSelecionada.getId());
+            
+            String nomeCategoria = textNome.getText().trim();
+
+            if (nomeCategoria.isEmpty()){
+                JOptionPane.showMessageDialog(null, "Insira um nome  para editar a categoria", "Erro nome categoria", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if(nomeCategoria.matches("\\d+")){
+                JOptionPane.showMessageDialog(null, "O nome não pode ser apenas números", "Erro", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             categoriaAtualizada.setNome(textNome.getText());
+            
+            String tamanhoCategoria = tamanhoComboBox.getSelectedItem().toString();
+            if(tamanhoCategoria == "Selecione um tamanho"){
+                JOptionPane.showMessageDialog(null, "Selecione um tamanho válido para salvar a categoria.");
+                return;
+            }
             categoriaAtualizada.setTamanho(tamanhoComboBox.getSelectedItem().toString());
+            
+            
+            String nomeEmbalagem = textEmbalagem.getText().trim();
+
+            if (nomeEmbalagem.isEmpty()){
+                JOptionPane.showMessageDialog(null, "Insira um nome  para embalagem para editar a categoria", "Erro nome categoria", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if(nomeEmbalagem.matches("\\d+")){
+                JOptionPane.showMessageDialog(null, "O nome da embalagem não pode ser apenas números", "Erro", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            categoriaAtualizada.setEmbalagem(textEmbalagem.getText());
             categoriaAtualizada.setEmbalagem(textEmbalagem.getText());
 
+            
+            categoriaAtualizada.setId(categoriaSelecionada.getId());
+            
+            
             CategoriaDAO dao = new CategoriaDAO();
             boolean sucesso = dao.updateCategoria(categoriaAtualizada);
             if (sucesso){
@@ -281,6 +316,7 @@ public class EditarCategoria extends javax.swing.JFrame {
                     
         }
     }//GEN-LAST:event_btnSalvarAlteracoesActionPerformed
+    
     //BOTÃO VISUALIZAR CATEGORIA
     private void btnVisualizarCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVisualizarCategoriaActionPerformed
         try{
@@ -288,12 +324,15 @@ public class EditarCategoria extends javax.swing.JFrame {
             CategoriaDAO dao = new CategoriaDAO();
             
             Categoria categoriaPreenchida = dao.getListaCategoriasPorId(categoriaSelecionada.getId());
-            //Categoria categoriaPreenchida = new Categoria();
             
-            if (categoriaPreenchida.getId()==0 || categoriaPreenchida == null){
+            
+            if (categoriaSelecionada.getId()==0 || categoriaSelecionada == null){
                 JOptionPane.showMessageDialog(null, "Erro, selecione uma categoria", "Erro seleção de categoria", JOptionPane.ERROR_MESSAGE);
+                return;
             }
-            else if (categoriaPreenchida != null){
+            
+            if (categoriaPreenchida != null){
+                
                 textNome.setText(categoriaPreenchida.getNome());
                 textEmbalagem.setText(categoriaPreenchida.getEmbalagem());  
                 
