@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
+import View.MensagemCheck;
 
 
 public class ProdutoDAO {
@@ -160,29 +161,6 @@ public class ProdutoDAO {
 //RELATÓRIOS
 
 
-
-public class MensagemCheck {
-    public static void mostrar(String mensagem) {
-        // Carrega e redimensiona o ícone
-        ImageIcon originalIcon = new ImageIcon(MensagemCheck.class.getResource("check.png"));
-        Image imagemReduzida = originalIcon.getImage().getScaledInstance(48, 48, Image.SCALE_SMOOTH);
-        Icon checkIcon = new ImageIcon(imagemReduzida);
-
-        JOptionPane.showMessageDialog(
-            null,
-            mensagem,
-            "Sucesso",
-            JOptionPane.PLAIN_MESSAGE,
-            checkIcon
-        );
-    }
-}
-
-
-
-    
-    
-
     //Relatorio com produtos que estão abaixo da quantidade mínima
     public boolean relatorioQntMinima() {
         ProdutoDAO listarprodutos = new ProdutoDAO();
@@ -231,7 +209,7 @@ public class MensagemCheck {
             if (encontrouProdutoAcima) {
                 JOptionPane.showMessageDialog(null, "Os seguintes produtos estão com o estoque acima do máximo" + mensagem);
             } else {
-                //JOptionPane.showMessageDialog(null, "Tudo ótimo, nenhum produto em excesso no estoque");
+                
                 MensagemCheck.mostrar("Tudo ótimo, nenhum produto em excesso no estoque");
             }
 
