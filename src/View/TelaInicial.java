@@ -11,6 +11,7 @@ import View.Categoria.CriarCategoria;
 import View.Categoria.ApagarCategoria;
 import View.Categoria.EditarCategoria;
 import View.Movimentacao.EntradaMovimentacao;
+import View.Movimentacao.SaidaMovimentacao;
 import DAO.ProdutoDAO;
 
 /**
@@ -185,6 +186,11 @@ public class TelaInicial extends javax.swing.JFrame {
         jMenu6.add(jMenuItem13);
 
         jMenuItem14.setText("Saída");
+        jMenuItem14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem14ActionPerformed(evt);
+            }
+        });
         jMenu6.add(jMenuItem14);
 
         jMenuBar1.add(jMenu6);
@@ -269,6 +275,13 @@ public class TelaInicial extends javax.swing.JFrame {
         telaEntradaMovimentacao.setVisible(true);
     }//GEN-LAST:event_jMenuItem13ActionPerformed
 
+    private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
+        // TODO add your handling code here:
+        SaidaMovimentacao telaSaidaMovimentacao = new SaidaMovimentacao();
+        telaSaidaMovimentacao.setLocationRelativeTo(null);
+        telaSaidaMovimentacao.setVisible(true);
+    }//GEN-LAST:event_jMenuItem14ActionPerformed
+    
     /**
      * @param args the command line arguments
      */

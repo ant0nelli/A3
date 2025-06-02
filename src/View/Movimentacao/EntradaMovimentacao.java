@@ -19,7 +19,7 @@ public class EntradaMovimentacao extends javax.swing.JFrame {
     ProdutoDAO produtoDAO = new ProdutoDAO();
     try {
         List<Produto> produtos = produtoDAO.listarTodos();
-        jComboBox1.removeAllItems(); // Limpa o combo
+        jComboBox1.removeAllItems();
         
         
         for (Produto p : produtos) {
@@ -50,117 +50,81 @@ public class EntradaMovimentacao extends javax.swing.JFrame {
         }
     });
 }
-    // Dentro da classe View.Movimentacao.EntradaMovimentacao
+  
+    private void salvarMovimentacaoEntrada() {
+    
+        String nomeProdutoSelecionado = (String) jComboBox1.getSelectedItem();
+        String quantidadeStr = jTextField1.getText().trim();
 
-private void salvarMovimentacaoEntrada() {
-    // 1. Obter dados da interface gráfica
-    String nomeProdutoSelecionado = (String) jComboBox1.getSelectedItem();
-    String quantidadeStr = jTextField1.getText().trim();
+        if (nomeProdutoSelecionado == null) {
+            JOptionPane.showMessageDialog(this, "Por favor, selecione um produto.", "Validação Falhou", JOptionPane.WARNING_MESSAGE);
+            jComboBox1.requestFocus();
+            return;
+        }
 
-    // 2. Validar os dados de entrada
-    if (nomeProdutoSelecionado == null) {
-        JOptionPane.showMessageDialog(this, "Por favor, selecione um produto.", "Validação Falhou", JOptionPane.WARNING_MESSAGE);
-        jComboBox1.requestFocus();
-        return;
-    }
+        if (quantidadeStr.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, digite a quantidade.", "Validação Falhou", JOptionPane.WARNING_MESSAGE);
+            jTextField1.requestFocus();
+            return;
+         }
 
-    if (quantidadeStr.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Por favor, digite a quantidade.", "Validação Falhou", JOptionPane.WARNING_MESSAGE);
-        jTextField1.requestFocus();
-        return;
-    }
-
-    int quantidadeEntrada;
-    try {
-        quantidadeEntrada = Integer.parseInt(quantidadeStr);
+        int quantidadeEntrada;
+        try {
+            quantidadeEntrada = Integer.parseInt(quantidadeStr);
         if (quantidadeEntrada <= 0) {
-            JOptionPane.showMessageDialog(this, "A quantidade deve ser um número positivo.", "Validação Falhou", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "A quantidade deve ser um número positivo.", "Validação Falhou", JOptionPane.ERROR_MESSAGE);
+                jTextField1.requestFocus();
+                return;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "A quantidade deve ser um número válido (inteiro).", "Erro de Formato", JOptionPane.ERROR_MESSAGE);
             jTextField1.requestFocus();
             return;
         }
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "A quantidade deve ser um número válido (inteiro).", "Erro de Formato", JOptionPane.ERROR_MESSAGE);
-        jTextField1.requestFocus();
-        return;
-    }
 
-    // 3. Processar e salvar os dados (interação com DAO)
-    try {
-        ProdutoDAO produtoDAO = new ProdutoDAO(); // Instancia seu ProdutoDAO
-
-        // Como o jComboBox1 armazena Nomes, precisamos buscar o objeto Produto.
-        // Idealmente, seu ProdutoDAO teria um método buscarPorNome(String nome).
-        // Por agora, vamos iterar pela lista de todos os produtos retornada por listarTodos().
-        List<Produto> todosOsProdutos = produtoDAO.listarTodos();
-        Produto produtoSelecionadoObj = null;
-        for (Produto p : todosOsProdutos) {
-            if (p.getNome().equals(nomeProdutoSelecionado)) {
-                produtoSelecionadoObj = p;
-                break;
+        try {
+            ProdutoDAO produtoDAO = new ProdutoDAO(); 
+            List<Produto> todosOsProdutos = produtoDAO.listarTodos();
+            Produto produtoSelecionadoObj = null;
+            for (Produto p : todosOsProdutos) {
+                if (p.getNome().equals(nomeProdutoSelecionado)) {
+                    produtoSelecionadoObj = p;
+                    break;
+                }
             }
-        }
 
         if (produtoSelecionadoObj == null) {
-            JOptionPane.showMessageDialog(this, "Produto selecionado ('" + nomeProdutoSelecionado + "') não encontrado nos registros.", "Erro", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+                JOptionPane.showMessageDialog(this, "Produto selecionado ('" + nomeProdutoSelecionado + "') não encontrado nos registros.", "Erro", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-        // --- LÓGICA DE ATUALIZAÇÃO DE ESTOQUE E REGISTRO DE MOVIMENTAÇÃO ---
-
-        // a. Atualizar o estoque do produto
         int estoqueAtual = produtoSelecionadoObj.getQuantidadeEstoque();
         int novoEstoque = estoqueAtual + quantidadeEntrada;
-        produtoSelecionadoObj.setQuantidadeEstoque(novoEstoque); // Atualiza o objeto Produto
-
-        // Chama o método atualizar do ProdutoDAO.
-        // Seu método atualizar(Produto) já persiste todas as informações do produto, incluindo o estoque.
+        produtoSelecionadoObj.setQuantidadeEstoque(novoEstoque);
         boolean atualizadoComSucesso = produtoDAO.atualizar(produtoSelecionadoObj);
 
         if (atualizadoComSucesso) {
-            // b. Registrar a movimentação (IMPORTANTE: Exige MovimentacaoDAO e Movimentacao Model)
-            // Esta parte é crucial para um bom controle de estoque e rastreabilidade.
-            // Você precisará criar a classe Model.Movimentacao e DAO.MovimentacaoDAO.
-            /*
-            // Exemplo de como seria com MovimentacaoDAO:
-            Model.Movimentacao novaEntradaMov = new Model.Movimentacao(); // Supondo que você criou essa classe
-            novaEntradaMov.setProdutoId(produtoSelecionadoObj.getIdProduto()); // Usa getIdProduto() do seu Produto model
-            novaEntradaMov.setQuantidade(quantidadeEntrada);
-            novaEntradaMov.setTipo("ENTRADA"); // Define o tipo da movimentação
-            novaEntradaMov.setDataMovimentacao(new java.sql.Timestamp(System.currentTimeMillis())); // Data atual
-
-            DAO.MovimentacaoDAO movimentacaoDAO = new DAO.MovimentacaoDAO(); // Você precisará criar esta classe DAO
-            movimentacaoDAO.salvar(novaEntradaMov); // Método para inserir na tabela de movimentações
-            */
-
             String mensagemSucesso = "Entrada de " + quantidadeEntrada + " unidade(s) do produto '" + nomeProdutoSelecionado + "' registrada.\n" +
                                      "Novo estoque: " + novoEstoque + ".";
             
-            // Se você tiver a classe MensagemCheck configurada e quiser usá-la:
-            // DAO.ProdutoDAO.MensagemCheck.mostrar(mensagemSucesso); 
-            // Caso contrário, use JOptionPane padrão:
+           
             JOptionPane.showMessageDialog(this, mensagemSucesso, "Sucesso na Entrada", JOptionPane.INFORMATION_MESSAGE);
 
             // Limpar campos após salvar
             jTextField1.setText("");
-            jComboBox1.setSelectedIndex(-1); // Desseleciona o item ou defina para um índice padrão (ex: 0)
-            
-            // Opcional: Recarregar os produtos no ComboBox se quiser refletir alguma mudança (improvável neste caso)
-            // carregarProdutosNoComboBox(); 
+            jComboBox1.setSelectedIndex(-1); 
 
         } else {
-            // Teoricamente, seu método atualizar lança RuntimeException em caso de falha SQL,
-            // então este 'else' pode não ser alcançado se uma exceção ocorrer.
             JOptionPane.showMessageDialog(this, "Falha ao atualizar o estoque do produto no banco de dados (o DAO não retornou erro, mas indicou falha).", "Erro de Atualização", JOptionPane.ERROR_MESSAGE);
         }
 
     } catch (SQLException ex) {
         JOptionPane.showMessageDialog(this, "Erro de SQL ao processar a entrada: " + ex.getMessage(), "Erro de Banco de Dados", JOptionPane.ERROR_MESSAGE);
-        ex.printStackTrace(); // Importante para depuração
+        ex.printStackTrace(); // 
     } catch (RuntimeException ex) {
-        // Seu ProdutoDAO.atualizar pode lançar RuntimeException em caso de SQLException
         JOptionPane.showMessageDialog(this, "Erro (RuntimeException) durante a operação com o banco de dados: " + ex.getMessage(), "Erro Interno do DAO", JOptionPane.ERROR_MESSAGE);
         ex.printStackTrace();
-    } catch (Exception ex) { // Captura genérica para outros erros inesperados
+    } catch (Exception ex) {
         JOptionPane.showMessageDialog(this, "Ocorreu um erro inesperado: " + ex.getMessage(), "Erro Inesperado", JOptionPane.ERROR_MESSAGE);
         ex.printStackTrace();
     }
