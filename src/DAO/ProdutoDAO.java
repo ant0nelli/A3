@@ -1,14 +1,13 @@
 package DAO;
 
 import Model.Produto;
-import java.awt.*;
+import View.Mensagens;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
-import View.MensagemCheck;
 
 
 public class ProdutoDAO {
@@ -178,16 +177,16 @@ public class ProdutoDAO {
             }
 
             if (encontrouProdutoAbaixo) {
-                JOptionPane.showMessageDialog(null, "Os seguintes produtos estão com estoque abaixo do mínimo:\n\n" + mensagem);
+                //JOptionPane.showMessageDialog(null, "Os seguintes produtos estão com estoque abaixo do mínimo:\n\n" + mensagem);
+                Mensagens.mostrarAviso("Os seguintes produitos estão com o estoque abaixo do mínimo\n\n" + mensagem);
             } else {
-                //JOptionPane.showMessageDialog(null, "Todos os produtos estão com estoque acima do mínimo.");
-                MensagemCheck.mostrar("Todos os produtos estão com o estoque acima do mínimo");
+                Mensagens.mostrarCheck("Todos os produtos estão com o estoque acima do mínimo");
             }
 
             return encontrouProdutoAbaixo;
 
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro ao gerar o relatório de quantidade mínima: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            Mensagens.mostrarError("Erro ao gerar o relátorio de quantidade mínima" + ex.getMessage());
             return false;
         }
     }
@@ -207,10 +206,10 @@ public class ProdutoDAO {
                 }
             }
             if (encontrouProdutoAcima) {
-                JOptionPane.showMessageDialog(null, "Os seguintes produtos estão com o estoque acima do máximo" + mensagem);
+                Mensagens.mostrarAviso("Os seguintes produtos estão com o estoque acima do máximo" + mensagem);
             } else {
                 
-                MensagemCheck.mostrar("Tudo ótimo, nenhum produto em excesso no estoque");
+                Mensagens.mostrarCheck("Tudo ótimo, nenhum produto em excesso no estoque");
             }
 
             return encontrouProdutoAcima;

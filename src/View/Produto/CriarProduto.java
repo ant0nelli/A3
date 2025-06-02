@@ -12,6 +12,7 @@ import DAO.ProdutoDAO;
 import java.util.List;
 import Model.Produto;
 import Model.Categoria;
+import View.Mensagens;
 import java.awt.HeadlessException;
 import javax.swing.JOptionPane;
 
@@ -232,7 +233,8 @@ public class CriarProduto extends javax.swing.JFrame {
 
 
             if (categoriaSelecionada == null || categoriaSelecionada.getId() == 0) {
-                JOptionPane.showMessageDialog(null, "Por favor, selecione uma categoria válida para o produto.", "Erro de Validação", JOptionPane.WARNING_MESSAGE);
+                Mensagens.mostrarAviso("Selecione uma categoria válida para o produto");
+                //JOptionPane.showMessageDialog(null, "Por favor, selecione uma categoria válida para o produto.", "Erro de Validação", JOptionPane.WARNING_MESSAGE);
                 return; // Para a execução se a categoria for inválida
             }
 
@@ -240,7 +242,8 @@ public class CriarProduto extends javax.swing.JFrame {
             produtoNovo.setNomeCategoria(categoriaSelecionada.getNome());
 
             if (textNome.getText().trim().isEmpty()){
-                JOptionPane.showMessageDialog(null, "Insira um nome para criar um produto", "Erro nome do produto", JOptionPane.ERROR_MESSAGE);
+                Mensagens.mostrarAviso("Insira um nome para criar um produto");
+                //JOptionPane.showMessageDialog(null, "Insira um nome para criar um produto", "Erro nome do produto", JOptionPane.ERROR_MESSAGE);
                 return;
             }else{
                 produtoNovo.setNome(textNome.getText());
@@ -250,7 +253,8 @@ public class CriarProduto extends javax.swing.JFrame {
             try {
                 produtoNovo.setPreco(Double.parseDouble(textPreco.getText()));
             } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Por favor, insira um valor numérico válido para o Preço.", "Erro de Formato", JOptionPane.ERROR_MESSAGE);
+                Mensagens.mostrarError("Por favor, insira um valor numérico válido para o Preço");
+                //JOptionPane.showMessageDialog(null, "Por favor, insira um valor numérico válido para o Preço.", "Erro de Formato", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             
@@ -258,12 +262,14 @@ public class CriarProduto extends javax.swing.JFrame {
             String unidade = textUnidade.getText().trim();
             
             if (unidade.isEmpty()){
-                JOptionPane.showMessageDialog(null, "Insira uma unidade para criar um produto", "Erro unidade do produto", JOptionPane.ERROR_MESSAGE);
+                Mensagens.mostrarAviso("Insira uma unidade para criar um produto");
+                //JOptionPane.showMessageDialog(null, "Insira uma unidade para criar um produto", "Erro unidade do produto", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             
             if(unidade.matches("\\d+")){
-                JOptionPane.showMessageDialog(null, "A unidade não pode ser apenas números", "Erro", JOptionPane.ERROR_MESSAGE);
+                Mensagens.mostrarAviso("A unidade não pode ser apenas números");
+                //JOptionPane.showMessageDialog(null, "A unidade não pode ser apenas números", "Erro", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             produtoNovo.setUnidade(textUnidade.getText());
@@ -277,7 +283,8 @@ public class CriarProduto extends javax.swing.JFrame {
                 int qntMin = Integer.parseInt(qntMinStr);
                 int qntMax = Integer.parseInt(qntMaxStr);
                 if (qntMin > qntMax){
-                    JOptionPane.showMessageDialog(null, "A quantidade mínima em estoque deve ser menor que a quantidade máxima em estoque");
+                    Mensagens.mostrarAviso("A quantidade mínima em estoque deve ser menor que a quantidade máxima em estoque");
+                    //JOptionPane.showMessageDialog(null, "A quantidade mínima em estoque deve ser menor que a quantidade máxima em estoque");
                     return;
                 }
                 
@@ -287,7 +294,8 @@ public class CriarProduto extends javax.swing.JFrame {
                 
                 
             }catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Por favor, insira valores numéricos válidos para Quantidade em Estoque, Mínima e Máxima.", "Erro de Formato", JOptionPane.ERROR_MESSAGE);
+                Mensagens.mostrarAviso("Por favor, insira valores numéricos válidos para Quantidade em Estoque, Mínima e Máxima.");
+                //JOptionPane.showMessageDialog(null, "Por favor, insira valores numéricos válidos para Quantidade em Estoque, Mínima e Máxima.", "Erro de Formato", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             
@@ -296,7 +304,8 @@ public class CriarProduto extends javax.swing.JFrame {
             boolean sucesso = dao.insertProduto(produtoNovo);
 
             if(sucesso){
-                JOptionPane.showMessageDialog(null, "Produto inserido com sucesso!");
+                Mensagens.mostrarCheck("Produto criado com sucesso");
+                //JOptionPane.showMessageDialog(null, "Produto inserido com sucesso!");
                
                 textPreco.setText(""); 
                 textNome.setText(""); 
@@ -307,7 +316,8 @@ public class CriarProduto extends javax.swing.JFrame {
                 categoriaComboBox.setSelectedItem(placeholderCategoria); 
 
             } else {
-                JOptionPane.showMessageDialog(null, "Erro ao criar seu produto.", "Erro de Inserção", JOptionPane.ERROR_MESSAGE);
+                Mensagens.mostrarError("Erro ao criar o produto");
+                //JOptionPane.showMessageDialog(null, "Erro ao criar seu produto.", "Erro de Inserção", JOptionPane.ERROR_MESSAGE);
             }
 
         } catch (HeadlessException ex) { 

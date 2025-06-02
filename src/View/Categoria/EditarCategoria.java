@@ -6,6 +6,7 @@ package View.Categoria;
 import java.awt.HeadlessException;
 import Model.Categoria;
 import DAO.CategoriaDAO;
+import View.Mensagens;
 import javax.swing.JOptionPane;
 import java.util.ArrayList;
 import java.util.List;
@@ -255,7 +256,8 @@ public class EditarCategoria extends javax.swing.JFrame {
             Categoria categoriaSelecionada = (Categoria) listarCategoriasComboBox.getSelectedItem();
             
             if (categoriaSelecionada.getId() == 0 || categoriaSelecionada == null){
-                JOptionPane.showMessageDialog(null,"Selecione uma categoria para visualizar antes de salvar", "Erro categoria", JOptionPane.ERROR_MESSAGE);
+                Mensagens.mostrarAviso("Selecione uma categoria para visualizar antes de salvar");
+                //JOptionPane.showMessageDialog(null,"Selecione uma categoria para visualizar antes de salvar", "Erro categoria", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             Categoria categoriaAtualizada = new Categoria();
@@ -263,19 +265,22 @@ public class EditarCategoria extends javax.swing.JFrame {
             String nomeCategoria = textNome.getText().trim();
 
             if (nomeCategoria.isEmpty()){
-                JOptionPane.showMessageDialog(null, "Insira um nome  para editar a categoria", "Erro nome categoria", JOptionPane.ERROR_MESSAGE);
+                Mensagens.mostrarAviso("O nome da categoria não pode ser vazio");
+                //JOptionPane.showMessageDialog(null, "Insira um nome  para editar a categoria", "Erro nome categoria", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
             if(nomeCategoria.matches("\\d+")){
-                JOptionPane.showMessageDialog(null, "O nome não pode ser apenas números", "Erro", JOptionPane.ERROR_MESSAGE);
+                Mensagens.mostrarAviso("O nome não pode ser apenas números.");
+                //JOptionPane.showMessageDialog(null, "O nome não pode ser apenas números", "Erro", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             categoriaAtualizada.setNome(textNome.getText());
             
             String tamanhoCategoria = tamanhoComboBox.getSelectedItem().toString();
             if(tamanhoCategoria == "Selecione um tamanho"){
-                JOptionPane.showMessageDialog(null, "Selecione um tamanho válido para salvar a categoria.");
+                Mensagens.mostrarError("Selecione um tamnho válido para salvar a categoria");
+                //JOptionPane.showMessageDialog(null, "Selecione um tamanho válido para salvar a categoria.");
                 return;
             }
             categoriaAtualizada.setTamanho(tamanhoComboBox.getSelectedItem().toString());
@@ -284,12 +289,14 @@ public class EditarCategoria extends javax.swing.JFrame {
             String nomeEmbalagem = textEmbalagem.getText().trim();
 
             if (nomeEmbalagem.isEmpty()){
-                JOptionPane.showMessageDialog(null, "Insira um nome  para embalagem para editar a categoria", "Erro nome categoria", JOptionPane.ERROR_MESSAGE);
+                Mensagens.mostrarAviso("A embalagem não pode estar vazia");
+                //JOptionPane.showMessageDialog(null, "Insira um nome  para embalagem para editar a categoria", "Erro nome categoria", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
             if(nomeEmbalagem.matches("\\d+")){
-                JOptionPane.showMessageDialog(null, "O nome da embalagem não pode ser apenas números", "Erro", JOptionPane.ERROR_MESSAGE);
+                Mensagens.mostrarAviso("O nome da embalagem não pode ser apenas números");
+                //JOptionPane.showMessageDialog(null, "O nome da embalagem não pode ser apenas números", "Erro", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             categoriaAtualizada.setEmbalagem(textEmbalagem.getText());
@@ -302,14 +309,16 @@ public class EditarCategoria extends javax.swing.JFrame {
             CategoriaDAO dao = new CategoriaDAO();
             boolean sucesso = dao.updateCategoria(categoriaAtualizada);
             if (sucesso){
-                JOptionPane.showMessageDialog(null, "Cateogira atualizada com sucesso");
+                Mensagens.mostrarCheck("Categoria atualizada com sucesso!");
+                //JOptionPane.showMessageDialog(null, "Cateogira atualizada com sucesso");
                 atualizarComboBox();
                 atualizarTabela();
                 textNome.setText("");
                 tamanhoComboBox.setSelectedItem("Selecione um tamanho");
                 textEmbalagem.setText("");
             }else{
-                JOptionPane.showMessageDialog(null,"Erro ao atualizar categoria", "Erro", JOptionPane.ERROR_MESSAGE);
+                Mensagens.mostrarError("Erro ao atualizar a categoria");
+                //JOptionPane.showMessageDialog(null,"Erro ao atualizar categoria", "Erro", JOptionPane.ERROR_MESSAGE);
             }
             }catch (HeadlessException e){
                 JOptionPane.showMessageDialog(null, "Erro ao atualizar:" + e.getMessage());
@@ -327,7 +336,8 @@ public class EditarCategoria extends javax.swing.JFrame {
             
             
             if (categoriaSelecionada.getId()==0 || categoriaSelecionada == null){
-                JOptionPane.showMessageDialog(null, "Erro, selecione uma categoria", "Erro seleção de categoria", JOptionPane.ERROR_MESSAGE);
+                Mensagens.mostrarError("Selecione uma categoria para visualizar");
+                //JOptionPane.showMessageDialog(null, "Erro, selecione uma categoria", "Erro seleção de categoria", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             
@@ -341,7 +351,8 @@ public class EditarCategoria extends javax.swing.JFrame {
                 tamanhoComboBox.setSelectedItem(tamanhoSalvo);
 
             }else{
-                JOptionPane.showMessageDialog(null, "Produto não encontrado!");
+                //JOptionPane.showMessageDialog(null, "Produto não encontrado!");
+                Mensagens.mostrarError("Produto não encontrado");
             }
             
             

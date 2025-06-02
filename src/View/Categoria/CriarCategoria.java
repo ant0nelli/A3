@@ -6,6 +6,7 @@ package View.Categoria;
 import Model.Categoria;
 import javax.swing.JOptionPane;
 import DAO.CategoriaDAO;
+import View.Mensagens;
 import java.sql.Connection;
 
 /**
@@ -143,7 +144,8 @@ public class CriarCategoria extends javax.swing.JFrame {
         //Verificação nome
         String nomeCategoria = (String) jTextField2.getText();
         if (nomeCategoria.trim().isEmpty()){
-            JOptionPane.showMessageDialog(null, "É necessário de um nome para criar a categoria", "Erro em relação ao nome", JOptionPane.WARNING_MESSAGE);
+            Mensagens.mostrarAviso("Para criar a categoria é necessário um nome");
+            //JOptionPane.showMessageDialog(null, "É necessário de um nome para criar a categoria", "Erro em relação ao nome", JOptionPane.WARNING_MESSAGE);
             return;
         }
         categoriaNova.setNome(nomeCategoria);
@@ -151,7 +153,8 @@ public class CriarCategoria extends javax.swing.JFrame {
         //Verificação categoria
         String tamanhoSelecionado = (String) jComboBox1.getSelectedItem();
         if ( tamanhoSelecionado == null || tamanhoSelecionado.equals("Selecione uma categoria")){
-            JOptionPane.showMessageDialog(null, "Insira uma categoria para criar um produto","Erro com a categoria", JOptionPane.WARNING_MESSAGE);
+            Mensagens.mostrarAviso("Selecione um tamanho antes de criar a categoria.");
+            //JOptionPane.showMessageDialog(null, "Insira uma categoria para criar um produto","Erro com a categoria", JOptionPane.WARNING_MESSAGE);
             return;
         }
         categoriaNova.setTamanho(tamanhoSelecionado);
@@ -160,7 +163,8 @@ public class CriarCategoria extends javax.swing.JFrame {
         //Verificação embalagem
         String nomeEmbalagem = (String) jTextField5.getText();
         if(nomeEmbalagem.trim().isEmpty()){
-            JOptionPane.showMessageDialog(null, "Coloque uma embalagem para criar uma categoria", "Erro com a embalagem", JOptionPane.WARNING_MESSAGE);
+            Mensagens.mostrarAviso("Defina uma embalagem para criar uma categoria");
+            //JOptionPane.showMessageDialog(null, "Coloque uma embalagem para criar uma categoria", "Erro com a embalagem", JOptionPane.WARNING_MESSAGE);
             return;
         }
         categoriaNova.setEmbalagem(nomeEmbalagem);
@@ -181,7 +185,8 @@ public class CriarCategoria extends javax.swing.JFrame {
                 jComboBox1.setSelectedItem("Selecione uma categoria");
                 jTextField5.setText("");
             } else {
-                JOptionPane.showMessageDialog(null, "Erro ao inserir categoria.", "Erro", JOptionPane.ERROR_MESSAGE);
+                Mensagens.mostrarError("Erro ao inserir categoria");
+                //JOptionPane.showMessageDialog(null, "Erro ao inserir categoria.", "Erro", JOptionPane.ERROR_MESSAGE);
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Ocorreu um erro inesperado ao criar a categoria: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);

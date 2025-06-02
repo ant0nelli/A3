@@ -4,18 +4,18 @@
  */
 package View;
 
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
 
 /**
  *
  * @author arthu
  */
-public class MensagemCheck {
+public class Mensagens {
 
-    public static void mostrar(String mensagem) {
+    public static void mostrarCheck(String mensagem) {
         // Carrega e redimensiona o ícone
-        ImageIcon originalIcon = new ImageIcon(MensagemCheck.class.getResource("check.png"));
+        ImageIcon originalIcon = new ImageIcon(Mensagens.class.getResource("check.png"));
         Image imagemReduzida = originalIcon.getImage().getScaledInstance(48, 48, Image.SCALE_SMOOTH);
         Icon checkIcon = new ImageIcon(imagemReduzida);
 
@@ -27,4 +27,16 @@ public class MensagemCheck {
                 checkIcon
         );
     }
+
+    public static void mostrarError(String mensagem){
+        JOptionPane.showMessageDialog(null, mensagem, "Erro", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public static void mostrarAviso(String mensagem){
+        JOptionPane.showMessageDialog(null, mensagem, "Atenção", JOptionPane.WARNING_MESSAGE);
+    }
+
+
 }
+
+

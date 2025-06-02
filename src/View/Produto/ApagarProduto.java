@@ -6,6 +6,7 @@ package View.Produto;
 
 import DAO.ProdutoDAO;
 import Model.Produto;
+import View.Mensagens;
 import java.awt.HeadlessException;
 import java.util.List;
 
@@ -133,7 +134,8 @@ public class ApagarProduto extends javax.swing.JFrame {
         Produto produtoApagar = (Produto) produtoComboBox.getSelectedItem();
 
         if (produtoApagar == null || produtoApagar.getIdProduto() == 0) {
-            JOptionPane.showMessageDialog(null, "Erro. Selecione um produto para apagar", "Erro ao selecionar produto", JOptionPane.ERROR_MESSAGE);
+            Mensagens.mostrarError("Selecione um produto para apagar");
+            //JOptionPane.showMessageDialog(null, "Erro. Selecione um produto para apagar", "Erro ao selecionar produto", JOptionPane.ERROR_MESSAGE);
             return;
         }
         int confirmacao = JOptionPane.showConfirmDialog(this,
@@ -146,10 +148,12 @@ public class ApagarProduto extends javax.swing.JFrame {
             try {
                 boolean sucesso = dao.deletar(produtoApagar.getIdProduto());
                 if (sucesso) {
-                    JOptionPane.showMessageDialog(null, "Produto apagado com sucesso!");
+                    Mensagens.mostrarCheck("Produto apagado com sucesso");
+                    //JOptionPane.showMessageDialog(null, "Produto apagado com sucesso!");
                     atualizarComboBox();
                 } else {
-                    JOptionPane.showMessageDialog(null, "Erro ao apagar produto");
+                    Mensagens.mostrarError("Erro ao apagar produto");
+                    //JOptionPane.showMessageDialog(null, "Erro ao apagar produto");
                 }
             } catch (HeadlessException e) {
                 JOptionPane.showMessageDialog(null, "Erro" + e.getMessage());

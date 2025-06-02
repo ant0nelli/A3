@@ -5,12 +5,11 @@
         <group>
             <file>file:/C:/A3/A3/src/View/TelaInicial.java</file>
             <file>file:/C:/A3/A3/src/DAO/ProdutoDAO.java</file>
-            <file>file:/C:/A3/A3/src/Model/Categoria.java</file>
-            <file>file:/C:/A3/A3/src/Model/Produto.java</file>
-            <file>file:/C:/A3/A3/src/Principal/Principal.java</file>
+            <file>file:/C:/A3/A3/src/View/MensagemCheck.java</file>
+            <file>file:/C:/A3/A3/src/DAO/CategoriaDAOteste2.java</file>
+            <file>file:/C:/A3/A3/src/DAO/CategoriaDAOteste1.java</file>
+            <file>file:/C:/A3/A3/src/View/Movimentacao/EntradaMovimentacao.java</file>
             <file>file:/C:/A3/A3/src/View/Categoria/ApagarCategoria.java</file>
-            <file>file:/C:/A3/A3/src/View/Categoria/CriarCategoria.java</file>
-            <file>file:/C:/A3/A3/src/DAO/CategoriaDAO.java</file>
         </group>
     </open-files>
 </project-private>

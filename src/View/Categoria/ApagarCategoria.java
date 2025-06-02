@@ -7,6 +7,7 @@ package View.Categoria;
 import DAO.CategoriaDAO;
 import java.util.List;
 import Model.Categoria;
+import View.Mensagens;
 import javax.swing.JOptionPane;
 
 import java.sql.SQLException;
@@ -131,7 +132,8 @@ public class ApagarCategoria extends javax.swing.JFrame {
         Categoria categoriaSelecionada = (Categoria) comboBoxCategoria.getSelectedItem();
 
         if( categoriaSelecionada == null || categoriaSelecionada.getId() == 0){
-            JOptionPane.showMessageDialog(null, "Por favor, selecione uma categoria válida para o produto.", "Erro de Validação", JOptionPane.WARNING_MESSAGE);
+            //JOptionPane.showMessageDialog(null, "Por favor, selecione uma categoria válida para o produto.", "Erro de Validação", JOptionPane.WARNING_MESSAGE);
+            Mensagens.mostrarError("Por favor, selecione uma categoria válida para o produto");
             return;
         } 
 
@@ -139,7 +141,8 @@ public class ApagarCategoria extends javax.swing.JFrame {
 
         try{
             if (apagar.existemProdutosNaCategoria(categoriaSelecionada.getId())){
-                JOptionPane.showMessageDialog(null, "Essa categoria não pode ser apagada pois existem produtos relacionados a ela. Troque a categoria desses produtos antes de continuar", "Erro ao apagar", JOptionPane.ERROR_MESSAGE);
+                Mensagens.mostrarError("Só é possível remover a categoria caso não haja produtos dentro dela");
+                //JOptionPane.showMessageDialog(null, "Essa categoria não pode ser apagada pois existem produtos relacionados a ela. Troque a categoria desses produtos antes de continuar", "Erro ao apagar", JOptionPane.ERROR_MESSAGE);
 
             }else{
                 int confirmacao = JOptionPane.showConfirmDialog(this, 
@@ -150,10 +153,12 @@ public class ApagarCategoria extends javax.swing.JFrame {
                 if (confirmacao == JOptionPane.YES_OPTION){
                     boolean sucesso = apagar.deleteCategoria(categoriaSelecionada);
                     if (sucesso){
-                        JOptionPane.showMessageDialog(this, "Categoria apagada com sucesso!");
+                        //JOptionPane.showMessageDialog(this, "Categoria apagada com sucesso!");
+                        Mensagens.mostrarCheck("Categoria apagada com sucesso!");
                         atualizarComboBox();   
                     } else {
-                        JOptionPane.showMessageDialog(this, "Erro ao apagar a categoria.", "Erro", JOptionPane.ERROR_MESSAGE);
+                        Mensagens.mostrarError("Erro ao apagar a categoria");
+                        //JOptionPane.showMessageDialog(this, "Erro ao apagar a categoria.", "Erro", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }
