@@ -153,6 +153,11 @@ public class TelaInicial extends javax.swing.JFrame {
         jMenu5.add(jMenuItem6);
 
         jMenuItem7.setText("Balanço Físico/Financeiro");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
         jMenu5.add(jMenuItem7);
 
         jMenuItem8.setText("Produtos com a quantidade abaixo da mínima em estoque");
@@ -224,7 +229,8 @@ public class TelaInicial extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
-        // TODO add your handling code here:
+        ProdutoDAO categoriaA = new ProdutoDAO();
+        categoriaA.relatorioProdutosPorCategoria();        // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem12ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
@@ -293,6 +299,11 @@ public class TelaInicial extends javax.swing.JFrame {
         produtoDAO.relatorioListaDePrecos();
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        ProdutoDAO produtoDAO = new ProdutoDAO();
+        produtoDAO.relatorioBalancoFisicoFinanceiro();        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
     
     /**
      * @param args the command line arguments

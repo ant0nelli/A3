@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Comparator;
 
 public class ProdutoDAO {
 
@@ -222,6 +225,7 @@ public class ProdutoDAO {
         }
 
     }// NOVO MÉTODO: Relatório Lista de Preços
+
     public void relatorioListaDePrecos() {
         StringBuilder mensagem = new StringBuilder("== LISTA DE PREÇOS ==\n\n");
         boolean produtosEncontrados = false;
@@ -253,6 +257,92 @@ public class ProdutoDAO {
         } catch (SQLException ex) {
             Mensagens.mostrarError("Erro ao gerar a lista de preços: " + ex.getMessage());
         }
-       }
     }
 
+    // NOVO MÉTODO: Balanço Físico/Financeiro
+    public void relatorioBalancoFisicoFinanceiro() {
+        int totalItens = 0;
+        double valorTotalEstoque = 0.0;
+        StringBuilder detalhes = new StringBuilder("== BALANÇO FÍSICO E FINANCEIRO DO ESTOQUE ==\n\n");
+        detalhes.append(String.format("%-30s | %10s | %10s | %15s\n", "Produto", "Qtd.", "Preço Unit.", "Valor em Estoque"));
+        
+
+        try {
+            List<Produto> produtos = listarTodos(); // Reutiliza o método existente que já ordena por nome
+
+            if (produtos.isEmpty()) {
+                Mensagens.mostrarAviso("Nenhum produto cadastrado para gerar o balanço.");
+                return;
+            }
+
+            for (Produto p : produtos) {
+                totalItens += p.getQuantidadeEstoque();
+                double valorProdutoEmEstoque = p.getQuantidadeEstoque() * p.getPreco();
+                valorTotalEstoque += valorProdutoEmEstoque;
+                detalhes.append(String.format("%-30s | %10d | R$ %8.2f | R$ %13.2f\n",
+                        p.getNome(),
+                        p.getQuantidadeEstoque(),
+                        p.getPreco(),
+                        valorProdutoEmEstoque));
+            }
+
+            detalhes.append("--------------------------------------------------------------------------\n");
+            detalhes.append(String.format("\nQuantidade total de itens em estoque: %d unidades\n", totalItens));
+            detalhes.append(String.format("Valor financeiro total do estoque: R$ %.2f\n", valorTotalEstoque));
+
+            JOptionPane.showMessageDialog(null, detalhes);
+
+        } catch (SQLException ex) {
+            Mensagens.mostrarError("Erro ao gerar o balanço físico/financeiro: " + ex.getMessage());
+        }
+    }
+
+    // NOVO MÉTODO: Produtos por Categoria
+    public void relatorioProdutosPorCategoria() {
+        StringBuilder mensagemFinal = new StringBuilder("== PRODUTOS POR CATEGORIA ==\n\n");
+
+        try {
+            List<Produto> todosProdutos = listarTodos(); // Já vem com nome da categoria e ordenado por nome do produto
+
+            if (todosProdutos.isEmpty()) {
+                Mensagens.mostrarAviso("Nenhum produto cadastrado para exibir.");
+                return;
+            }
+
+            // Agrupa os produtos por categoria
+            Map<String, List<Produto>> produtosAgrupados = new HashMap<>();
+            for (Produto p : todosProdutos) {
+                produtosAgrupados.computeIfAbsent(p.getNomeCategoria(), k -> new ArrayList<>()).add(p);
+            }
+
+            // Ordena as categorias por nome para exibição
+            List<String> nomesCategoriaOrdenados = new ArrayList<>(produtosAgrupados.keySet());
+            nomesCategoriaOrdenados.sort(Comparator.naturalOrder());
+
+            if (produtosAgrupados.isEmpty()) { // Verificação adicional, embora coberta pela primeira
+                Mensagens.mostrarAviso("Nenhuma categoria com produtos encontrada.");
+                return;
+            }
+
+            for (String nomeCategoria : nomesCategoriaOrdenados) {
+                mensagemFinal.append("--- Categoria: ").append(nomeCategoria).append(" ---\n");
+                List<Produto> produtosDaCategoria = produtosAgrupados.get(nomeCategoria);
+                // produtosDaCategoria já estão ordenados pelo nome do produto (devido ao listarTodos)
+                for (Produto p : produtosDaCategoria) {
+                    mensagemFinal.append(String.format("  - Nome: %s (ID: %d)\n", p.getNome(), p.getIdProduto()));
+                    mensagemFinal.append(String.format("    Preço: R$ %.2f | Estoque: %d %s\n", p.getPreco(), p.getQuantidadeEstoque(), p.getUnidade()));
+                }
+                mensagemFinal.append("\n");
+            }
+
+            JTextArea textArea = new JTextArea(mensagemFinal.toString());
+            textArea.setEditable(false);
+            JScrollPane scrollPane = new JScrollPane(textArea);
+            scrollPane.setPreferredSize(new java.awt.Dimension(500, 400));
+            JOptionPane.showMessageDialog(null, scrollPane, "Produtos por Categoria", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (SQLException ex) {
+            Mensagens.mostrarError("Erro ao gerar o relatório de produtos por categoria: " + ex.getMessage());
+        }
+    }
+}
