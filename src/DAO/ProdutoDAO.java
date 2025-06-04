@@ -9,7 +9,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 
-
 public class ProdutoDAO {
 
     private final Connection connection;
@@ -32,6 +31,7 @@ public class ProdutoDAO {
         }
         return null;
     }
+
     //Update
     public boolean atualizar(Produto produto) {
         String sql = "UPDATE tb_produtos SET nome = ?, preco = ?, unidade = ?, quantidade_estoque = ?, quantidade_min_estoque = ?, quantidade_max_estoque = ?, id_categoria = ? WHERE id_produto = ?";
@@ -52,22 +52,24 @@ public class ProdutoDAO {
             throw new RuntimeException(e);
         }
     }
+
     //Deletar
-    public boolean deletar(int id_produto){
+    public boolean deletar(int id_produto) {
         String sql = "DELETE FROM tb_produtos WHERE id_produto = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            
+
             stmt.setInt(1, id_produto);
             int linhasAfetadas = stmt.executeUpdate();
             return linhasAfetadas > 0;
-           
-        }catch(SQLException e){
+
+        } catch (SQLException e) {
             System.out.println("Erro ao deletar produto com ID " + id_produto + ": " + e.getMessage());
-            e.printStackTrace(); 
-            return false; 
+            e.printStackTrace();
+            return false;
         }
-        
+
     }
+
     //Buscar por id
     public Produto buscarPorId(int id_produto) throws SQLException {
         //join para buscar o nome + id para poder usar lá no combobox em editar produto
@@ -85,6 +87,7 @@ public class ProdutoDAO {
         }
         return null;
     }
+
     //Listar todos
     public List<Produto> listarTodos() throws SQLException {
         List<Produto> produtos = new ArrayList<>();
@@ -92,14 +95,14 @@ public class ProdutoDAO {
         String sql = "SELECT p.*, c.nome AS nome_categoria "
                 + "FROM tb_produtos p "
                 + "JOIN tb_categorias c ON p.id_categoria = c.id_categoria";
-        try (PreparedStatement stmt = connection.prepareStatement(sql); 
-        ResultSet rs = stmt.executeQuery()) {
+        try (PreparedStatement stmt = connection.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 produtos.add(mapearProduto(rs));
             }
         }
         return produtos;
     }
+
     //Mapear os produtos
     private Produto mapearProduto(ResultSet rs) throws SQLException {
         Produto produto = new Produto();
@@ -115,6 +118,7 @@ public class ProdutoDAO {
         produto.setNomeCategoria(rs.getString("nome_categoria"));
         return produto;
     }
+
     //Reajuste Percentual
     public boolean reajustarPrecoProduto(Produto produto, double percentual) {
         String sql = "UPDATE tb_produtos SET preco = preco * (1 + ? / 100) WHERE id_produto = ?";
@@ -158,8 +162,6 @@ public class ProdutoDAO {
     }
 
 //RELATÓRIOS
-
-
     //Relatorio com produtos que estão abaixo da quantidade mínima
     public boolean relatorioQntMinima() {
         ProdutoDAO listarprodutos = new ProdutoDAO();
@@ -208,7 +210,7 @@ public class ProdutoDAO {
             if (encontrouProdutoAcima) {
                 Mensagens.mostrarAviso("Os seguintes produtos estão com o estoque acima do máximo" + mensagem);
             } else {
-                
+
                 Mensagens.mostrarCheck("Tudo ótimo, nenhum produto em excesso no estoque");
             }
 
@@ -219,6 +221,38 @@ public class ProdutoDAO {
             return false;
         }
 
+    }// NOVO MÉTODO: Relatório Lista de Preços
+    public void relatorioListaDePrecos() {
+        StringBuilder mensagem = new StringBuilder("== LISTA DE PREÇOS ==\n\n");
+        boolean produtosEncontrados = false;
+
+        try {
+            List<Produto> produtos = listarTodos();
+
+            if (produtos.isEmpty()) {
+                Mensagens.mostrarAviso("Nenhum produto cadastrado para exibir na lista de preços.");
+                return;
+            }
+
+            for (Produto p : produtos) {
+                mensagem.append(String.format("Nome: %s - Preço: R$ %.2f\n", p.getNome(), p.getPreco()));
+                produtosEncontrados = true;
+            }
+
+            if (produtosEncontrados) {
+                JTextArea textArea = new JTextArea(mensagem.toString());
+                textArea.setEditable(false);
+                JScrollPane scrollPane = new JScrollPane(textArea);
+                scrollPane.setPreferredSize(new java.awt.Dimension(400, 300));
+                JOptionPane.showMessageDialog(null, scrollPane, "Lista de Preços", JOptionPane.INFORMATION_MESSAGE);
+
+            } else {
+                Mensagens.mostrarAviso("Nenhum produto encontrado para exibir.");
+            }
+
+        } catch (SQLException ex) {
+            Mensagens.mostrarError("Erro ao gerar a lista de preços: " + ex.getMessage());
+        }
+       }
     }
 
-}

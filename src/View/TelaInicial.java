@@ -13,6 +13,7 @@ import View.Categoria.EditarCategoria;
 import View.Movimentacao.EntradaMovimentacao;
 import View.Movimentacao.SaidaMovimentacao;
 import DAO.ProdutoDAO;
+import java.util.List;
 
 /**
  *
@@ -144,6 +145,11 @@ public class TelaInicial extends javax.swing.JFrame {
         jMenu5.setText("Relatórios");
 
         jMenuItem6.setText("Lista de preços");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
         jMenu5.add(jMenuItem6);
 
         jMenuItem7.setText("Balanço Físico/Financeiro");
@@ -281,6 +287,12 @@ public class TelaInicial extends javax.swing.JFrame {
         telaSaidaMovimentacao.setLocationRelativeTo(null);
         telaSaidaMovimentacao.setVisible(true);
     }//GEN-LAST:event_jMenuItem14ActionPerformed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        ProdutoDAO produtoDAO = new ProdutoDAO();
+        produtoDAO.relatorioListaDePrecos();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
     
     /**
      * @param args the command line arguments
