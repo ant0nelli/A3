@@ -5,6 +5,7 @@
 package View.Movimentacao;
 import Model.Produto;
 import DAO.ProdutoDAO;
+import View.Mensagens;
 import java.sql.SQLException;
 import java.util.List;
 import javax.swing.*;
@@ -36,6 +37,7 @@ public class SaidaMovimentacao extends javax.swing.JFrame {
      */
     public SaidaMovimentacao() {
         initComponents();
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         carregarProdutosNoComboBox();
 
            
@@ -111,6 +113,11 @@ private void salvarMovimentacaoSaida() {
             jTextField1.requestFocus();
             return; 
         }
+        
+        if (estoqueAtual - quantidadeSaida < produtoSelecionadoObj.getQuantidadeMinEstoque()) {
+            Mensagens.mostrarAviso("O Estoque está menor que a quantidade mínima, Reabasteça seu Estoque!");
+        }
+        
 
         int novoEstoque = estoqueAtual - quantidadeSaida;
         produtoSelecionadoObj.setQuantidadeEstoque(novoEstoque);

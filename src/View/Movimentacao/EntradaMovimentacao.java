@@ -1,6 +1,7 @@
 package View.Movimentacao;
 import DAO.ProdutoDAO;
 import Model.Produto;
+import View.Mensagens;
 import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 import java.util.List;
@@ -41,6 +42,7 @@ public class EntradaMovimentacao extends javax.swing.JFrame {
      */
     public EntradaMovimentacao() {
         initComponents();
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         carregarProdutosNoComboBox();
 
     // Adiciona a ação para o botão Salvar (jButton1)
@@ -102,6 +104,12 @@ public class EntradaMovimentacao extends javax.swing.JFrame {
         int novoEstoque = estoqueAtual + quantidadeEntrada;
         produtoSelecionadoObj.setQuantidadeEstoque(novoEstoque);
         boolean atualizadoComSucesso = produtoDAO.atualizar(produtoSelecionadoObj);
+        
+        
+         Produto Produto = new Produto();
+        if (estoqueAtual + quantidadeEntrada > produtoSelecionadoObj.getQuantidadeMaxEstoque()){
+            Mensagens.mostrarAviso("A Quantidade em estoque está maior que a Quantidade Maxima!");
+        }
 
         if (atualizadoComSucesso) {
             String mensagemSucesso = "Entrada de " + quantidadeEntrada + " unidade(s) do produto '" + nomeProdutoSelecionado + "' registrada.\n" +
@@ -112,7 +120,8 @@ public class EntradaMovimentacao extends javax.swing.JFrame {
 
             // Limpar campos após salvar
             jTextField1.setText("");
-            jComboBox1.setSelectedIndex(-1); 
+            jComboBox1.setSelectedIndex(-1);
+        
 
         } else {
             JOptionPane.showMessageDialog(this, "Falha ao atualizar o estoque do produto no banco de dados (o DAO não retornou erro, mas indicou falha).", "Erro de Atualização", JOptionPane.ERROR_MESSAGE);
